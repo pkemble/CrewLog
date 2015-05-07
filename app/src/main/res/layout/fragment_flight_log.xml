@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <ScrollView
+        android:layout_height="match_parent"
+        android:layout_width="match_parent">
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp">
+            <!--
+            Date
+            Tail number
+            Flight #
+            Other crew name -->
+            <Button
+                android:id="@+id/btn_delete_logbook"
+                android:text="DELETE LOGBOOK"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="invisible"/>
+
+            <EditText
+                android:id="@+id/flDate"
+                android:minEms="10"
+                android:focusable="false"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <!--<DatePicker-->
+            <!--android:id="@+id/flDatePicker"-->
+            <!--android:visibility="invisible"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:calendarViewShown="false"-->
+            <!--android:spinnersShown="false" />-->
+
+            <EditText
+                android:id="@+id/flTailNumber"
+                android:text="N"
+                android:textAllCaps="true"
+                android:minEms="7"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="Tail #" />
+
+            <EditText
+                android:id="@+id/flFlightNumber"
+                android:minEms="7"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="Flight #" />
+
+            <EditText
+                android:id="@+id/flCrewName"
+                android:minEms="15"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="Other Crew Name" />
+
+            <ListView
+                android:id="@+id/flFlightsListView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <!-- crew meals
+            tips
+            -->
+            <FrameLayout
+                android:id="@+id/fl_entry_fragment"
+                android:layout_width="match_parent"
+                android:layout_height="300px"
+                android:layout_weight="1"/>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>
