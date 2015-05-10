@@ -1,4 +1,4 @@
-package com.kemble.crewlog;
+package com.kemblep.crewlog;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -6,8 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.kemble.crewlog.R;
-import com.kemble.crewlog.obj.Leg;
+import com.kemblep.crewlog.obj.Leg;
 
 
 /**

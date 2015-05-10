@@ -1,19 +1,15 @@
-package com.kemble.crewlog;
+package com.kemblep.crewlog;
 
-import android.support.v7.app.ActionBarActivity;
-import android.support.v4.app.Fragment;
 import android.os.Bundle;
-import android.view.LayoutInflater;
+import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 
-public class FlightLog extends ActionBarActivity {
+public class CrewLog extends ActionBarActivity {
 
     private Date mDate;
     private SimpleDateFormat mSdf = new SimpleDateFormat("MM/dd/yyyy");
@@ -21,10 +17,10 @@ public class FlightLog extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_flight_log);
+        setContentView(R.layout.activity_crew_log);
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
-                    .add(R.layout.fragment_flight_log, new FlightLogFragment())
+                    .add(R.id.fl_main, new FlightLogFragment())
                     .commit();
         }
     }

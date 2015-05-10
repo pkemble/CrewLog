@@ -1,7 +1,6 @@
-package com.kemble.crewlog;
+package com.kemblep.crewlog;
 
 import android.app.DatePickerDialog;
-import android.content.ContentValues;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -13,10 +12,11 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ListView;
 
-import com.kemble.crewlog.database.LogbookOpenItemHelper;
-import com.kemble.crewlog.obj.FlightLogEntry;
-import com.kemble.crewlog.obj.Leg;
-import com.kemble.crewlog.obj.LegArrayAdapter;
+import com.kemblep.crewlog.database.Commands;
+import com.kemblep.crewlog.database.LogbookOpenItemHelper;
+import com.kemblep.crewlog.obj.FlightLogEntry;
+import com.kemblep.crewlog.obj.Leg;
+import com.kemblep.crewlog.obj.LegArrayAdapter;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -36,7 +36,7 @@ public class FlightLogFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        final View vFlightLog = inflater.inflate(R.layout.activity_flight_log, container, false);
+        final View vFlightLog = inflater.inflate(R.layout.fragment_flight_log, container, false);
 
         LogbookOpenItemHelper logbookOpenItemHelper = new LogbookOpenItemHelper(vFlightLog.getContext());
         SQLiteDatabase logbook = logbookOpenItemHelper.getWritableDatabase();
@@ -49,7 +49,7 @@ public class FlightLogFragment extends Fragment {
 
         mDate = Calendar.getInstance().getTime();
 
-        final EditText flDate = (EditText) vFlightLog.findViewById(R.id.flDate);
+        final EditText flDate = (EditText) vFlightLog.findViewById(R.id.fl_date);
 
         flDate.setText(mSdf.format(mDate));
 
@@ -83,7 +83,7 @@ public class FlightLogFragment extends Fragment {
 
         LegArrayAdapter legArrayAdapter = new LegArrayAdapter(vFlightLog.getContext(),entry.Legs);
 
-        ListView lvLegs = (ListView) vFlightLog.findViewById(R.id.flFlightsListView);
+        ListView lvLegs = (ListView) vFlightLog.findViewById(R.id.fl_flights_listview);
         lvLegs.setAdapter(legArrayAdapter);
 
         LogEntryFragment logEntryFragment = new LogEntryFragment();
@@ -114,27 +114,31 @@ public class FlightLogFragment extends Fragment {
         leg.BlockOut = new Date();
         leg.FlightTime = 1.3;
         leg.InstrumentTime = 0.0;
-        leg.Night = false;
+        leg.Night = 0.0;
         entry.Legs.add(leg);
+        entry.Duty = 24;
         entry.CrewMeals = 0;
+        entry.Tips = 2;
 
-        ContentValues values = new ContentValues();
-        values.put("DATE" ,entry.Date.toString());
-        values.put("TAILNUMBER", entry.TailNumber);
-        values.put("FLIGHTNUMBER", entry.FlightNumber);
-        values.put("CREWNAME", entry.CrewMember);
-        values.put("TYPE", leg.FlightType);
-        values.put("DEP", leg.Departure);
-        values.put("BLOCKOUT", leg.BlockOut.hashCode());
-        values.put("DEP", leg.Arrival);
-        values.put("BLOCKIN", leg.BlockIn.hashCode());
-        values.put("INST", leg.InstrumentTime);
-        values.put("APPR", leg.Approaches);
-        values.put("NIGHT", leg.Night);
-        values.put("CREWMEAL", entry.CrewMeals);
-        //TODO add tip amount
+        Commands.insertFlight(entry, vFlightLog.getContext());
 
-        logbook.insert(logbookOpenItemHelper.TABLE_NAME, null, values);
+//        ContentValues values = new ContentValues();
+//        values.put("DATE" ,entry.Date.toString());
+//        values.put("TAILNUMBER", entry.TailNumber);
+//        values.put("FLIGHTNUMBER", entry.FlightNumber);
+//        values.put("CREWNAME", entry.CrewMember);
+//        values.put("TYPE", leg.FlightType);
+//        values.put("DEP", leg.Departure);
+//        values.put("BLOCKOUT", leg.BlockOut.hashCode());
+//        values.put("DEP", leg.Arrival);
+//        values.put("BLOCKIN", leg.BlockIn.hashCode());
+//        values.put("INST", leg.InstrumentTime);
+//        values.put("APPR", leg.Approaches);
+//        values.put("NIGHT", leg.Night);
+//        values.put("CREWMEAL", entry.CrewMeals);
+//        //TODO add tip amount
+//
+//        logbook.insert(logbookOpenItemHelper.TABLE_NAME, null, values);
     }
 
     protected void deleteLogbook(View v){

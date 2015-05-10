@@ -1,4 +1,4 @@
-package com.kemble.crewlog;
+package com.kemblep.crewlog;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;

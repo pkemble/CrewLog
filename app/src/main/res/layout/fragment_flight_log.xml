@@ -23,7 +23,7 @@
                 android:visibility="invisible"/>
 
             <EditText
-                android:id="@+id/flDate"
+                android:id="@+id/fl_date"
                 android:minEms="10"
                 android:focusable="false"
                 android:layout_width="wrap_content"
@@ -38,7 +38,7 @@
             <!--android:spinnersShown="false" />-->
 
             <EditText
-                android:id="@+id/flTailNumber"
+                android:id="@+id/fl_tail_number"
                 android:text="N"
                 android:textAllCaps="true"
                 android:minEms="7"
@@ -47,21 +47,21 @@
                 android:hint="Tail #" />
 
             <EditText
-                android:id="@+id/flFlightNumber"
+                android:id="@+id/fl_flight_number"
                 android:minEms="7"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:hint="Flight #" />
 
             <EditText
-                android:id="@+id/flCrewName"
+                android:id="@+id/fl_crewname"
                 android:minEms="15"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:hint="Other Crew Name" />
 
             <ListView
-                android:id="@+id/flFlightsListView"
+                android:id="@+id/fl_flights_listview"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
