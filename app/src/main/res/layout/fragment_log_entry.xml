@@ -4,9 +4,11 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
+    android:orientation="vertical"
+    android:background="#0f0"
     tools:context=".FlightLog$PlaceholderFragment">
     <TextView
-        android:text="this is at the top of the entry layout"
+        android:text="Role:"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
     <RadioGroup
@@ -40,70 +42,146 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
     </RadioGroup>
-
-    <EditText
-        android:id="@+id/fl_dep"
-        android:minEms="4"
-        android:textAllCaps="true"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-
-    <EditText
-        android:id="@+id/fl_blockout"
-        android:minEms="4"
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:hint="@string/block_out_time_hint"
-        android:inputType="number" />
-
-    <EditText
-        android:id="@+id/fl_arr"
-        android:minEms="4"
-        android:textAllCaps="true"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-
-    <EditText
-        android:id="@+id/fl_blockin"
-        android:minEms="4"
+        android:layout_margin="6dp"
+        android:orientation="horizontal">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Departure"/>
+            <EditText
+                android:id="@+id/fl_dep"
+                android:minEms="4"
+                android:textAllCaps="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Block Out"/>
+            <EditText
+                android:id="@+id/fl_blockout"
+                android:minEms="4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:inputType="number" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Arrival"/>
+            <EditText
+                android:id="@+id/fl_arr"
+                android:minEms="4"
+                android:textAllCaps="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Block In"/>
+            <EditText
+                android:id="@+id/fl_blockin"
+                android:minEms="4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:inputType="number" />
+        </LinearLayout>
+    </LinearLayout>
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:hint="@string/block_in_time_hint"
-        android:inputType="number" />
-
-    <EditText
-        android:id="@+id/fl_inst"
-        android:minEms="3"
-        android:inputType="number"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-
-    <EditText
-        android:id="@+id/fl_approaches"
-        android:minEms="2"
-        android:inputType="number"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-
-    <!-- TODO add night to/ldng -->
-    <CheckBox
-        android:id="@+id/fl_night"
+        android:layout_margin="6dp"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Inst."/>
+        <EditText
+            android:id="@+id/fl_inst"
+            android:minEms="3"
+            android:inputType="number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Appr."/>
+        <EditText
+            android:id="@+id/fl_approaches"
+            android:minEms="2"
+            android:inputType="number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Night TO/Lndg" />
-
-    <EditText
-        android:id="@+id/fl_crew_meal"
-        android:minEms="1"
-        android:inputType="number"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-
+        android:orientation="horizontal">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Night"/>
+            <EditText
+                android:id="@+id/fl_night"
+                android:minEms="3"
+                android:inputType="number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <CheckBox
+                android:id="@+id/fl_night_to"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="T.O." />
+            <CheckBox
+                android:id="@+id/fl_night_landing"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Landing" />
+        </LinearLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Crew Meals"/>
+        <EditText
+            android:id="@+id/fl_crew_meal"
+            android:minEms="1"
+            android:inputType="number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
     <Button
         android:id="@+id/btn_submit_leg"
         android:text="submit leg"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
-
-
 </LinearLayout>

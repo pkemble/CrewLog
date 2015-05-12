@@ -17,6 +17,7 @@ public class LogbookOpenItemHelper extends SQLiteOpenHelper {
     private static final String LOGBOOK_TABLE_CREATE =
             "CREATE TABLE "+ LOGBOOK_TABLE_NAME + " (" +
                     "ID INTEGER PRIMARY KEY, " +
+                    "DUTY INTEGER," +
                     "DATE TIMESTAMP," +
                     "TAILNUMBER TEXT," +
                     "FLIGHTNUMBER TEXT," +

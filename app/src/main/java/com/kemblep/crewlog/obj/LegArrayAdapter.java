@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.kemblep.crewlog.R;
@@ -41,9 +42,9 @@ public class LegArrayAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
+        final LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         if(convertView == null)
         {
-            LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(R.layout.listview_flights, null);
         }
 
@@ -61,7 +62,7 @@ public class LegArrayAdapter extends BaseAdapter {
         tvLegTitle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                FrameLayout frameLayout = (FrameLayout) v.findViewById(R.id.edit_entry_frame);
             }
         });
 
