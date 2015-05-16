@@ -8,6 +8,7 @@ import java.util.Date;
  * Created by Pete on 5/3/2015.
  */
 public class Leg {
+    public int Id;
     public long Sequence;
     public int FlightType; //0=pf 1=pm 2=sf 3=sm
     public String Departure;
@@ -17,6 +18,8 @@ public class Leg {
     public double InstrumentTime;
     public double Approaches;
     public double Night;
+    public boolean NightTakeoff;
+    public boolean NightLanding;
     public double FlightTime;
 
     public Leg dbToLeg(ContentValues values){
@@ -43,8 +46,15 @@ public class Leg {
         values.put("INST", InstrumentTime);
         values.put("APPR", Approaches);
         values.put("NIGHT", Night);
+        values.put("NIGHT_TO", NightTakeoff);
+        values.put("NIGHT_LNDG", NightLanding);
         values.put("FLIGHTTIME", FlightTime);
 
         return values;
+    }
+
+    public static Leg getLeg(int leg) {
+
+        return null;
     }
 }

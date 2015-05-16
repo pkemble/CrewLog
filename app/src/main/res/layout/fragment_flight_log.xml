@@ -77,4 +77,10 @@
                 android:layout_weight="1"/>
         </LinearLayout>
     </ScrollView>
+    <FrameLayout
+        android:id="@+id/fl_edit_entry_frame"
+        android:background="#090"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="fill"/>
 </LinearLayout>

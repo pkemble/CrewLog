@@ -13,7 +13,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 
 import com.kemblep.crewlog.database.Commands;
-import com.kemblep.crewlog.database.LogbookOpenItemHelper;
+import com.kemblep.crewlog.database.LogbookDbAdapter;
 import com.kemblep.crewlog.obj.FlightLogEntry;
 import com.kemblep.crewlog.obj.Leg;
 import com.kemblep.crewlog.obj.LegArrayAdapter;
@@ -38,13 +38,13 @@ public class FlightLogFragment extends Fragment {
 
         final View vFlightLog = inflater.inflate(R.layout.fragment_flight_log, container, false);
 
-        LogbookOpenItemHelper logbookOpenItemHelper = new LogbookOpenItemHelper(vFlightLog.getContext());
-        SQLiteDatabase logbook = logbookOpenItemHelper.getWritableDatabase();
+        LogbookDbAdapter logbookDbAdapter = new LogbookDbAdapter(vFlightLog.getContext());
+        SQLiteDatabase logbook = logbookDbAdapter.getWritableDatabase();
 
         FlightLogEntry entry = new FlightLogEntry();
 
         if(BuildConfig.DEBUG){
-            setupDebug(vFlightLog, logbook, logbookOpenItemHelper, entry);
+            setupDebug(vFlightLog, logbook, logbookDbAdapter, entry);
         }
 
         mDate = Calendar.getInstance().getTime();
@@ -92,7 +92,7 @@ public class FlightLogFragment extends Fragment {
         return vFlightLog;
     }
 
-    private void setupDebug(View vFlightLog, SQLiteDatabase logbook, LogbookOpenItemHelper logbookOpenItemHelper, FlightLogEntry entry) {
+    private void setupDebug(View vFlightLog, SQLiteDatabase logbook, LogbookDbAdapter logbookDbAdapter, FlightLogEntry entry) {
         Button btnDelete = (Button) vFlightLog.findViewById(R.id.btn_delete_logbook);
         btnDelete.setVisibility(View.VISIBLE);
         btnDelete.setOnClickListener(new View.OnClickListener() {
@@ -138,13 +138,13 @@ public class FlightLogFragment extends Fragment {
 //        values.put("CREWMEAL", entry.CrewMeals);
 //        //TODO add tip amount
 //
-//        logbook.insert(logbookOpenItemHelper.TABLE_NAME, null, values);
+//        logbook.insert(logbookDbAdapter.TABLE_NAME, null, values);
     }
 
     protected void deleteLogbook(View v){
-        LogbookOpenItemHelper logbookOpenItemHelper = new LogbookOpenItemHelper(v.getContext());
-        SQLiteDatabase db = logbookOpenItemHelper.getWritableDatabase();
-        logbookOpenItemHelper.deleteTable(db);
+        LogbookDbAdapter logbookDbAdapter = new LogbookDbAdapter(v.getContext());
+        SQLiteDatabase db = logbookDbAdapter.getWritableDatabase();
+        logbookDbAdapter.deleteTable(db);
     }
 
 }

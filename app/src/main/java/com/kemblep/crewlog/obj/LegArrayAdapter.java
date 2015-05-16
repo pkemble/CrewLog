@@ -1,13 +1,17 @@
 package com.kemblep.crewlog.obj;
 
 import android.content.Context;
+import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.FrameLayout;
 import android.widget.TextView;
 
+import com.kemblep.crewlog.CrewLog;
+import com.kemblep.crewlog.LogEntryFragment;
 import com.kemblep.crewlog.R;
 
 import java.util.ArrayList;
@@ -48,7 +52,7 @@ public class LegArrayAdapter extends BaseAdapter {
             convertView = inflater.inflate(R.layout.listview_flights, null);
         }
 
-        Leg leg = mLegs.get(position);
+        final Leg leg = mLegs.get(position);
         TextView tvLegTitle = (TextView) convertView.findViewById(R.id.fl_entry_title);
         if(tvLegTitle == null){
             return convertView;
@@ -62,10 +66,21 @@ public class LegArrayAdapter extends BaseAdapter {
         tvLegTitle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FrameLayout frameLayout = (FrameLayout) v.findViewById(R.id.edit_entry_frame);
+                Bundle b = new Bundle();
+                b.putInt("ID", leg.Id);
+
+                LogEntryFragment logEntryFragment = new LogEntryFragment();
+                logEntryFragment.setArguments(b);
+
+                FragmentManager fm = ((CrewLog)mContext).getSupportFragmentManager();
+                FragmentTransaction ft = fm.beginTransaction();
+                ft.replace(R.id.fl_main, logEntryFragment);
+                ft.addToBackStack("Leg Entry");
+                ft.commit();
+
+                return;
             }
         });
-
 
         return convertView;
     }
