@@ -23,10 +23,12 @@ public class LegArrayAdapter extends BaseAdapter {
 
     private ArrayList<Leg> mLegs;
     private Context mContext;
+    private FlightLogEntry mEntry;
 
-    public LegArrayAdapter(Context context, ArrayList<Leg> legs ){
+    public LegArrayAdapter(Context context, FlightLogEntry entry){
         mContext = context;
-        mLegs = legs;
+        mEntry = entry;
+        mLegs = entry.Legs;
     }
 
     @Override
@@ -36,7 +38,7 @@ public class LegArrayAdapter extends BaseAdapter {
 
     @Override
     public Object getItem(int position) {
-        return mLegs.get(position);
+        return position;
     }
 
     @Override
@@ -58,16 +60,20 @@ public class LegArrayAdapter extends BaseAdapter {
             return convertView;
         }
 
-        String legTitle = "Leg " + position + 1;
+        String legTitle = "Leg " + (position + 1);
         if(leg.Departure != null && leg.Arrival != null){
             legTitle += " " + leg.Departure + " -> " + leg.Arrival;
+        } else {
+            //this is an empty leg - use it to add a new leg
+            legTitle = mContext.getResources().getString(R.string.add_new_entry);
         }
         tvLegTitle.setText(legTitle);
         tvLegTitle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //check for null id
                 Bundle b = new Bundle();
-                b.putInt("ID", leg.Id);
+                b.putInt(Leg.Columns.ID.name(), leg.Id);
 
                 LogEntryFragment logEntryFragment = new LogEntryFragment();
                 logEntryFragment.setArguments(b);

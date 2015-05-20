@@ -5,7 +5,6 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:orientation="vertical"
-    android:background="#0f0"
     tools:context=".FlightLog$PlaceholderFragment">
     <TextView
         android:text="Role:"
@@ -57,7 +56,7 @@
                 android:text="Departure"/>
             <EditText
                 android:id="@+id/fl_dep"
-                android:minEms="4"
+                android:ems="4"
                 android:textAllCaps="true"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
@@ -72,10 +71,10 @@
                 android:text="Block Out"/>
             <EditText
                 android:id="@+id/fl_blockout"
-                android:minEms="4"
+                android:ems="4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:inputType="number" />
+                android:inputType="numberDecimal" />
         </LinearLayout>
         <LinearLayout
             android:layout_width="wrap_content"
@@ -87,7 +86,7 @@
                 android:text="Arrival"/>
             <EditText
                 android:id="@+id/fl_arr"
-                android:minEms="4"
+                android:ems="4"
                 android:textAllCaps="true"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
@@ -102,10 +101,10 @@
                 android:text="Block In"/>
             <EditText
                 android:id="@+id/fl_blockin"
-                android:minEms="4"
+                android:ems="4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:inputType="number" />
+                android:inputType="numberDecimal" />
         </LinearLayout>
     </LinearLayout>
     <LinearLayout
@@ -119,8 +118,8 @@
             android:text="Inst."/>
         <EditText
             android:id="@+id/fl_inst"
-            android:minEms="3"
-            android:inputType="number"
+            android:ems="3"
+            android:inputType="numberDecimal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
         <TextView
@@ -129,8 +128,8 @@
             android:text="Appr."/>
         <EditText
             android:id="@+id/fl_approaches"
-            android:minEms="2"
-            android:inputType="number"
+            android:ems="2"
+            android:inputType="numberDecimal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
     </LinearLayout>
@@ -148,8 +147,8 @@
                 android:text="Night"/>
             <EditText
                 android:id="@+id/fl_night"
-                android:minEms="3"
-                android:inputType="number"
+                android:ems="3"
+                android:inputType="numberDecimal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
         </LinearLayout>
@@ -168,16 +167,6 @@
                 android:layout_height="wrap_content"
                 android:text="Landing" />
         </LinearLayout>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Crew Meals"/>
-        <EditText
-            android:id="@+id/fl_crew_meal"
-            android:minEms="1"
-            android:inputType="number"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
     </LinearLayout>
     <Button
         android:id="@+id/btn_submit_leg"

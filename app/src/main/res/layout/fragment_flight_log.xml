@@ -2,85 +2,136 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#0bf">
+    android:layout_height="match_parent">
     <ScrollView
         android:layout_height="match_parent"
         android:layout_width="match_parent">
         <LinearLayout
+            android:id="@+id/fl_layout"
             android:orientation="vertical"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="5dp">
-            <!--
-            Date
-            Tail number
-            Flight #
-            Other crew name -->
-            <Button
-                android:id="@+id/btn_delete_logbook"
-                android:text="DELETE LOGBOOK"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:visibility="invisible"/>
+            <LinearLayout
+                android:orientation="horizontal"
+                android:background="#f00"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <Button
+                    android:id="@+id/btn_delete_logbook"
+                    android:text="DELETE LOGBOOK"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="invisible"/>
 
+                <Button
+                    android:id="@+id/btn_export_logbook"
+                    android:text="EXPORT LOGBOOK"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="invisible"/>
+            </LinearLayout>
+            <TextView
+                android:text="Date: "
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
             <EditText
                 android:id="@+id/fl_date"
-                android:minEms="10"
+                android:minEms="5"
                 android:focusable="false"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
-            <!--<DatePicker-->
-            <!--android:id="@+id/flDatePicker"-->
-            <!--android:visibility="invisible"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:calendarViewShown="false"-->
-            <!--android:spinnersShown="false" />-->
-
-            <EditText
-                android:id="@+id/fl_tail_number"
-                android:text="N"
-                android:textAllCaps="true"
-                android:minEms="7"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:hint="Tail #" />
-
-            <EditText
-                android:id="@+id/fl_flight_number"
-                android:minEms="7"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:hint="Flight #" />
-
-            <EditText
-                android:id="@+id/fl_crewname"
-                android:minEms="15"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:hint="Other Crew Name" />
-
-            <ListView
-                android:id="@+id/fl_flights_listview"
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:text="Tail #: "
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <EditText
+                    android:id="@+id/fl_tail_number"
+                    android:ems="7"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+                <TextView
+                    android:text="Flight #: "
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <EditText
+                    android:id="@+id/fl_flight_number"
+                    android:ems="7"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:hint="Flight #" />
+            </LinearLayout>
+            <TextView
+                android:text="Crew Name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
-
-            <!-- crew meals
-            tips
-            -->
-            <FrameLayout
-                android:id="@+id/fl_entry_fragment"
+            <EditText
+                android:id="@+id/fl_crew_member"
+                android:ems="15"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <LinearLayout
+                android:orientation="horizontal"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"/>
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:text="Crew Meal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <EditText
+                    android:id="@+id/fl_crew_meals"
+                    android:inputType="number"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    android:text="Tips: $"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <EditText
+                    android:id="@+id/fl_tips"
+                    android:inputType="numberDecimal"
+                    android:hint="Tips"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+            <TextView
+                android:text="Remarks:"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <EditText
+                android:id="@+id/fl_remarks"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+            <LinearLayout
+                android:id="@+id/fl_flight_list"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <Button
+                android:id="@+id/btn_add_flight"
+                android:text="@string/add_new_entry"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <Button
+                android:id="@+id/btn_submit_flightlog"
+                android:text="@string/submit_log"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
         </LinearLayout>
+
     </ScrollView>
-    <FrameLayout
-        android:id="@+id/fl_edit_entry_frame"
-        android:background="#090"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="fill"/>
+    <!--<FrameLayout-->
+    <!--android:id="@+id/fl_edit_entry_frame"-->
+    <!--android:background="#090"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent"-->
+    <!--android:layout_gravity="fill"/>-->
 </LinearLayout>
