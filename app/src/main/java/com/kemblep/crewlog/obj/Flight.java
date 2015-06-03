@@ -26,16 +26,10 @@ public class Flight {
     public boolean NightTakeoff;
     public boolean NightLanding;
     public String FlightTime;
-    private Context mContext;
-    private FlightDbAdapter mDbAdapter;
+
     private final static String TAG = Flight.class.getName();
 
     public Flight(){}
-
-    public Flight(Context context) {
-        mContext = context;
-        mDbAdapter = new FlightDbAdapter(mContext);
-    }
 
     public enum Columns {
         ID,
@@ -99,15 +93,16 @@ public class Flight {
         return values;
     }
 
-    public Flight getFlightFromDb(int id){
+    public Flight getFlightFromDb(int id, Context context){
 
-        mDbAdapter.open();
-        Cursor c = this.mDbAdapter.getFlightById(id);
+        FlightDbAdapter fdb = new FlightDbAdapter(context);
+        fdb.open();
+        Cursor c = fdb.getFlightById(id);
         if(c == null){
             return null;
         }
         Flight f = flightsFromCursor(c).get(0);
-        mDbAdapter.close();
+        fdb.close();
         return f;
     }
 
@@ -144,10 +139,10 @@ public class Flight {
 
         ContentValues flightValues = flight.getContentValues();
 
-        flight.mDbAdapter = new FlightDbAdapter(context);
-        flight.mDbAdapter.open();
-        long flightEntryId = flight.mDbAdapter.insertFlight(flightValues);
-        flight.mDbAdapter.close();
+        FlightDbAdapter fdb = new FlightDbAdapter(context);
+        fdb.open();
+        long flightEntryId = fdb.insertFlight(flightValues);
+        fdb.close();
         if(flightEntryId > -1){
             Log.d(TAG, "Inserted flight entry ID " + flightEntryId + " for sequence " + flight.Sequence);
         } else {
@@ -159,9 +154,9 @@ public class Flight {
     public static long updateFlight(Flight flight, Context context) {
         ContentValues flightValues = flight.getContentValues();
 
-        flight.mDbAdapter = new FlightDbAdapter(context);
-        flight.mDbAdapter.open();
-        long flightEntryId = flight.mDbAdapter.updateFlight(flightValues, flight.Id);
+        FlightDbAdapter fdb = new FlightDbAdapter(context);
+        fdb.open();
+        long flightEntryId = fdb.updateFlight(flightValues, flight.Id);
 
         if(flightEntryId > -1){
             Log.d(TAG, "Updated flight entry ID " + flightEntryId + " for sequence " + flight.Sequence);

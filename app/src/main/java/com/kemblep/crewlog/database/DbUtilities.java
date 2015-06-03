@@ -61,7 +61,7 @@ public class DbUtilities {
     }
 
     public void populateLogbook(){
-        LogbookEntry fakeEntry = new LogbookEntry(mContext);
+        LogbookEntry fakeEntry = new LogbookEntry();
 
         Calendar c = Calendar.getInstance();
         c.set(Calendar.MONTH, Calendar.MAY);
@@ -104,6 +104,6 @@ public class DbUtilities {
         fakeEntry.CrewMeals = 0;
         fakeEntry.Tips = 2;
 
-        fakeEntry.insertLogbookEntry();
+        fakeEntry.insertLogbookEntry(mContext);
     }
 }

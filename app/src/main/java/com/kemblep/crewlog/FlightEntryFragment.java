@@ -46,7 +46,7 @@ public class FlightEntryFragment extends Fragment {
             mId = (Integer)b.get(Flight.Columns.ID.name());
 
             if(mId != null) {
-                Flight flight = new Flight(mContext).getFlightFromDb(mId);
+                Flight flight = new Flight().getFlightFromDb(mId, mContext);
                 if (flight != null) {
                     populateEntry(vEntry, flight);
                     btnSubmit.setText("UPDATE LEG");

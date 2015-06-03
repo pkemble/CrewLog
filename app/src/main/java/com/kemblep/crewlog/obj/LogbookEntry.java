@@ -28,16 +28,10 @@ public class LogbookEntry {
     public long Tips;
     public String Remarks;
 
-    private Context mContext;
-    private LogbookDbAdapter mDbAdapter;
-
-    protected LogbookEntry() {
-
+    public LogbookEntry() {
     }
-    public LogbookEntry(Context context){
-        mContext = context;
-        mDbAdapter = new LogbookDbAdapter(mContext);
-    }
+
+
 
     public enum Columns {
         ID,
@@ -48,10 +42,9 @@ public class LogbookEntry {
         CREWNAME,
         CREWMEAL,
         TIPS,
-        REMARKS
+        REMARKS;
     }
-
-    private ContentValues getContentValues() {
+    public ContentValues getContentValues() {
         ContentValues values = new ContentValues();
         if(EntryDate != null) {
             values.put(Columns.ENTRYDATE.name(), EntryDate);
@@ -74,22 +67,39 @@ public class LogbookEntry {
         return values;
     }
 
-    public long insertLogbookEntry() {
+    public long insertLogbookEntry(Context context) {
         try {
 
             //TODO handle multiple entries for the same date
-            mDbAdapter.open();
-            long entryId = mDbAdapter.insertLogbookEntry(this.getContentValues());
+            LogbookDbAdapter lba = new LogbookDbAdapter(context);
+            lba.open();
+            long entryId = lba.insertLogbookEntry(this.getContentValues());
 
             for (int i = 0; i < this.Flights.size(); i++){
                 //add the sequence to the leg
                 Flight l = this.Flights.get(i);
                 l.Sequence = entryId;
-                Flight.insertFlight(l, this.mContext);
+                Flight.insertFlight(l, context);
             }
 
-            mDbAdapter.close();
+            lba.close();
 
+            return entryId;
+
+        } catch(Exception e) {
+            Log.e(TAG, e.getMessage());
+        }
+        return -1;
+    }
+
+    public long updateLogbookEntry(Context context) {
+        try {
+
+            //TODO handle multiple entries for the same date
+            LogbookDbAdapter lba = new LogbookDbAdapter(context);
+            lba.open();
+            long entryId = lba.updateLogbookEntry(this.getContentValues());
+            lba.close();
             return entryId;
 
         } catch(Exception e) {

@@ -48,16 +48,7 @@ public class LogbookFragment extends Fragment {
 
         mContext = mFlightLogView.getContext();
 
-        mLogbookEntry = new LogbookEntry(mContext);
-
-        //setup submit/update button
-        Button btnSubmit = (Button) mFlightLogView.findViewById(R.id.btn_update_flightlog);
-        btnSubmit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                submitFlightLog(mFlightLogView);
-            }
-        });
+        mLogbookEntry = new LogbookEntry();
 
         if (mDate == null) {
             mDate = Calendar.getInstance().getTime();
@@ -82,65 +73,112 @@ public class LogbookFragment extends Fragment {
                         newDate.set(year, monthOfYear, dayOfMonth);
                         mDate = newDate.getTime();
                         flDate.setText(mSdf.format(mDate));
-                        getLegsForDate(mFlightLogView, mDate);
+                        setupLogbookFragment();
                     }
                 }, year, month, day);
                 datePickerDialog.show();
             }
         });
 
-        return getLegsForDate(mFlightLogView, mDate);
+        setupLogbookFragment();
+
+        return mFlightLogView;
     }
+
+    private void setupLogbookFragment(){
+        Log.d(TAG, "Getting legs for " + mSdf.format(mDate));
+        getLogbookEntry(mDate);
+
+        //populate this view
+        populateLogEntry();
+    }
+
 
     private void getLogbookEntry(Date date) {
         //get an array (mostly just one) of logbook entries
         final ArrayList<LogbookEntry> logEntries = LogbookEntry.getLogbookEntry(date, mContext);
         //check if there's more than one returned
-        if(logEntries.size() == 1){
+        if(logEntries.size() > 1){
+            //pop up a list dialog to pick the right one
+            final AlertDialog.Builder bSingle = new AlertDialog.Builder(mContext);
+            final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(mContext,
+                    android.R.layout.select_dialog_singlechoice);
+
+            for (LogbookEntry e : logEntries) {
+                String lineItem = e.EntryDate;
+                if (e.TailNumber != null) {
+                    lineItem += " : " + e.TailNumber;
+                }
+                arrayAdapter.add(lineItem);
+            }
+
+            bSingle.setSingleChoiceItems(arrayAdapter, 0, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    mLogbookEntry = logEntries.get(which);
+                    dialog.dismiss();
+                    populateLogEntry();
+                }
+            });
+            AlertDialog dialog = bSingle.create();
+            dialog.show();
+        } else if(logEntries.size() == 1) {
             mLogbookEntry = logEntries.get(0);
         }
-        //pop up a list dialog to pick the right one
-        final AlertDialog.Builder bSingle = new AlertDialog.Builder(mContext);
-        final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(mContext,
-                android.R.layout.select_dialog_singlechoice);
-        LogbookEntry selectedEntry;
-
-        for(LogbookEntry e : logEntries){
-            String lineItem = e.EntryDate;
-            if(e.TailNumber != null){
-                lineItem += " : " + e.TailNumber;
-            }
-            arrayAdapter.add(lineItem);
-        }
-
-        bSingle.setSingleChoiceItems(arrayAdapter, 0, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                mLogbookEntry = logEntries.get(which);
-                dialog.dismiss();
-                populateLogEntry(mFlightLogView, mLogbookEntry);
-            }
-        });
-        AlertDialog dialog = bSingle.create();
-        dialog.show();
     }
 
-    private View getLegsForDate(final View vFlightLog, Date dateOfLegs){
-        Log.d(TAG, "Getting legs for " + mSdf.format(dateOfLegs));
-        getLogbookEntry(dateOfLegs);
+    private long submitFlightLog() {
+        getFormValues();
+        return mLogbookEntry.insertLogbookEntry(mContext);
+    }
 
-        //populate this view
-        populateLogEntry(vFlightLog, mLogbookEntry);
+    private long updateFlightLog(){
+        getFormValues();
+        return mLogbookEntry.updateLogbookEntry(mContext);
+    }
 
-        //setup button
-        Button btnSubmit = (Button) vFlightLog.findViewById(R.id.btn_update_flightlog);
-        if(mLogbookEntry.Id != null){
-            btnSubmit.setText("Update Logbook Entry");
-        } else {
-            btnSubmit.setText("Submit Logbook Entry");
-        }
+    private void getFormValues(){
+        View vFlightLogEntry = this.getView();
+        EditText flTailNumber = (EditText) vFlightLogEntry.findViewById(R.id.fl_tail_number);
+        EditText flFlightNumber = (EditText) vFlightLogEntry.findViewById(R.id.fl_flight_number);
+        EditText flCrewMember = (EditText) vFlightLogEntry.findViewById(R.id.fl_crew_member);
+        EditText flCrewMeals = (EditText) vFlightLogEntry.findViewById(R.id.fl_crew_meals);
+        EditText flTips = (EditText) vFlightLogEntry.findViewById(R.id.fl_tips);
+        EditText flRemarks = (EditText) vFlightLogEntry.findViewById(R.id.fl_remarks);
 
-        LinearLayout flLinearLayout = (LinearLayout) vFlightLog.findViewById(R.id.fl_flight_list);
+        mLogbookEntry.EntryDate = Util.CustomSimpleDate(mDate);
+        mLogbookEntry.TailNumber = flTailNumber.getText().toString();
+        mLogbookEntry.FlightNumber = flFlightNumber.getText().toString();
+        mLogbookEntry.CrewMember = flCrewMember.getText().toString();
+        mLogbookEntry.CrewMeals = Long.parseLong(flCrewMeals.getText().toString());
+        mLogbookEntry.Tips = Long.parseLong(flTips.getText().toString());
+        mLogbookEntry.Remarks = flRemarks.getText().toString();
+    }
+
+    private void populateLogEntry() {
+        EditText flTailNumber = (EditText) mFlightLogView.findViewById(R.id.fl_tail_number);
+        EditText flFlightNumber = (EditText) mFlightLogView.findViewById(R.id.fl_flight_number);
+        EditText flCrewMember = (EditText) mFlightLogView.findViewById(R.id.fl_crew_member);
+        EditText flCrewMeals = (EditText) mFlightLogView.findViewById(R.id.fl_crew_meals);
+        EditText flTips = (EditText) mFlightLogView.findViewById(R.id.fl_tips);
+        EditText flRemarks = (EditText) mFlightLogView.findViewById(R.id.fl_remarks);
+
+        flTailNumber.setText(mLogbookEntry.TailNumber);
+        flFlightNumber.setText(mLogbookEntry.FlightNumber);
+        flCrewMember.setText(mLogbookEntry.CrewMember);
+        flCrewMeals.setText(Long.toString(mLogbookEntry.CrewMeals)); //TODO test this
+        flTips.setText(Long.toString(mLogbookEntry.Tips));
+        flRemarks.setText(mLogbookEntry.Remarks);
+
+        setupSubmitUpdateButton();
+
+        setupLegButtons();
+
+        return;
+    }
+
+    private void setupLegButtons() {
+        LinearLayout flLinearLayout = (LinearLayout) mFlightLogView.findViewById(R.id.fl_flight_list);
 
         for(int i = 0; i < mLogbookEntry.Flights.size(); i++){
             final Flight flight = mLogbookEntry.Flights.get(i);
@@ -172,7 +210,7 @@ public class LogbookFragment extends Fragment {
             flLinearLayout.removeAllViews();
         }
 
-        Button btnAddFlight = (Button) vFlightLog.findViewById(R.id.btn_add_flight);
+        Button btnAddFlight = (Button) mFlightLogView.findViewById(R.id.btn_add_flight);
         btnAddFlight.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -181,52 +219,38 @@ public class LogbookFragment extends Fragment {
                 //insert the logbook entry first, then go to the flight entry fragment
                 if (mLogbookEntry.Id == null) {
                     mLogbookEntry.EntryDate = Util.CustomSimpleDate(mDate);
-                    long newEntryId = submitFlightLog(vFlightLog);
+                    long newEntryId = submitFlightLog();
                     b.putInt("SEQUENCE", (int) newEntryId);
                 } else {
+                    //update the logbook entry
+                    updateFlightLog(); //TODO seems a little auspicious that mLogbookEntry is being updated here
                     b.putInt("SEQUENCE", mLogbookEntry.Id);
                 }
                 createEntryFragment(b);
             }
         });
 
-        return vFlightLog;
     }
 
-    private long submitFlightLog(View vFlightLogEntry) {
-        EditText flTailNumber = (EditText) vFlightLogEntry.findViewById(R.id.fl_tail_number);
-        EditText flFlightNumber = (EditText) vFlightLogEntry.findViewById(R.id.fl_flight_number);
-        EditText flCrewMember = (EditText) vFlightLogEntry.findViewById(R.id.fl_crew_member);
-        EditText flCrewMeals = (EditText) vFlightLogEntry.findViewById(R.id.fl_crew_meals);
-        EditText flTips = (EditText) vFlightLogEntry.findViewById(R.id.fl_tips);
-        EditText flRemarks = (EditText) vFlightLogEntry.findViewById(R.id.fl_remarks);
-
-        mLogbookEntry.EntryDate = Util.CustomSimpleDate(mDate);
-        mLogbookEntry.TailNumber = flTailNumber.getText().toString();
-        mLogbookEntry.FlightNumber = flFlightNumber.getText().toString();
-        mLogbookEntry.CrewMember = flCrewMember.getText().toString();
-        mLogbookEntry.CrewMeals = Long.parseLong(flCrewMeals.getText().toString());
-        mLogbookEntry.Tips = Long.parseLong(flTips.getText().toString());
-        mLogbookEntry.Remarks = flRemarks.getText().toString();
-
-        return mLogbookEntry.insertLogbookEntry();
-    }
-
-    private void populateLogEntry(View vFlightLog, LogbookEntry entry) {
-        EditText flTailNumber = (EditText) vFlightLog.findViewById(R.id.fl_tail_number);
-        EditText flFlightNumber = (EditText) vFlightLog.findViewById(R.id.fl_flight_number);
-        EditText flCrewMember = (EditText) vFlightLog.findViewById(R.id.fl_crew_member);
-        EditText flCrewMeals = (EditText) vFlightLog.findViewById(R.id.fl_crew_meals);
-        EditText flTips = (EditText) vFlightLog.findViewById(R.id.fl_tips);
-        EditText flRemarks = (EditText) vFlightLog.findViewById(R.id.fl_remarks);
-
-        flTailNumber.setText(entry.TailNumber);
-        flFlightNumber.setText(entry.FlightNumber);
-        flCrewMember.setText(entry.CrewMember);
-        flCrewMeals.setText(Long.toString(entry.CrewMeals)); //TODO test this
-        flTips.setText(Long.toString(entry.Tips));
-        flRemarks.setText(entry.Remarks);
-        return;
+    private void setupSubmitUpdateButton() {
+        Button btnSubmit = (Button) mFlightLogView.findViewById(R.id.btn_update_flightlog);
+        if(mLogbookEntry.Id != null){
+            btnSubmit.setText("Update Logbook Entry");
+            btnSubmit.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    updateFlightLog();
+                }
+            });
+        } else {
+            btnSubmit.setText("Submit Logbook Entry");
+            btnSubmit.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    submitFlightLog();
+                }
+            });
+        }
     }
 
     private void createEntryFragment(Bundle b){
