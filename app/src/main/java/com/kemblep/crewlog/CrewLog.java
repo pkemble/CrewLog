@@ -1,10 +1,16 @@
 package com.kemblep.crewlog;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 
+import com.kemblep.crewlog.database.DbUtilities;
+
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -13,14 +19,24 @@ public class CrewLog extends ActionBarActivity {
 
     private Date mDate;
     private SimpleDateFormat mSdf = new SimpleDateFormat("MM/dd/yyyy");
+    private final String TAG = CrewLog.class.getName();
+    private Context mContext;
+    public DbUtilities DbUtilities;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_crew_log);
+
+        mContext = getApplicationContext();
+
+        if(BuildConfig.DEBUG){
+            setupDebug();
+        }
+
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.fl_main, new FlightLogFragment())
+                    .add(R.id.fl_main, new LogbookFragment())
                     .commit();
         }
     }
@@ -45,5 +61,40 @@ public class CrewLog extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void setupDebug(){
+        final DbUtilities dbUtilities = new DbUtilities(mContext);
+
+        Button btnDelete = (Button) findViewById(R.id.btn_delete_logbook);
+        btnDelete.setVisibility(View.VISIBLE);
+        btnDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dbUtilities.dropTables();
+            }
+        });
+
+        Button btnExport = (Button) findViewById(R.id.btn_export_logbook);
+        btnExport.setVisibility(View.VISIBLE);
+        btnExport.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    dbUtilities.backupDatabase();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        Button btnPopulate = (Button) findViewById(R.id.btn_populate_logbook);
+        btnPopulate.setVisibility(View.VISIBLE);
+        btnPopulate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dbUtilities.populateLogbook();
+            }
+        });
     }
 }

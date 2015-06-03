@@ -3,6 +3,12 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+    <FrameLayout
+        android:id="@+id/fl_edit_entry_frame"
+        android:background="#090"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="fill"/>
     <ScrollView
         android:layout_height="match_parent"
         android:layout_width="match_parent">
@@ -12,25 +18,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="5dp">
-            <LinearLayout
-                android:orientation="horizontal"
-                android:background="#f00"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <Button
-                    android:id="@+id/btn_delete_logbook"
-                    android:text="DELETE LOGBOOK"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:visibility="invisible"/>
 
-                <Button
-                    android:id="@+id/btn_export_logbook"
-                    android:text="EXPORT LOGBOOK"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:visibility="invisible"/>
-            </LinearLayout>
             <TextView
                 android:text="Date: "
                 android:layout_width="wrap_content"
@@ -48,11 +36,13 @@
                 android:layout_height="wrap_content">
                 <TextView
                     android:text="Tail #: "
+                    android:inputType="textCapCharacters"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
                 <EditText
                     android:id="@+id/fl_tail_number"
                     android:ems="7"
+                    android:inputType="textCapCharacters"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
                 <TextView
@@ -62,9 +52,9 @@
                 <EditText
                     android:id="@+id/fl_flight_number"
                     android:ems="7"
+                    android:inputType="textCapCharacters"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:hint="Flight #" />
+                    android:layout_height="wrap_content"/>
             </LinearLayout>
             <TextView
                 android:text="Crew Name"
@@ -121,17 +111,10 @@
                 android:layout_height="wrap_content" />
 
             <Button
-                android:id="@+id/btn_submit_flightlog"
-                android:text="@string/submit_log"
+                android:id="@+id/btn_update_flightlog"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
         </LinearLayout>
-
     </ScrollView>
-    <!--<FrameLayout-->
-    <!--android:id="@+id/fl_edit_entry_frame"-->
-    <!--android:background="#090"-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="match_parent"-->
-    <!--android:layout_gravity="fill"/>-->
+
 </LinearLayout>

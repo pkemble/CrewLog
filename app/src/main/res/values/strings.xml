@@ -1,10 +1,9 @@
 <resources>
     <string name="app_name">CrewLog</string>
 
-    <string name="add_new_entry">Add a new leg</string>
+    <string name="add_new_entry">Add a new flight</string>
 
     <string name="block_out_time_hint">Block Out</string>
     <string name="block_in_time_hint">Block In</string>
     <string name="action_settings">Settings</string>
-    <string name="submit_log">Submit Flight Log</string>
 </resources>
