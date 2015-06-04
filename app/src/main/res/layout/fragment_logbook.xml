@@ -86,7 +86,6 @@
                 <EditText
                     android:id="@+id/fl_tips"
                     android:inputType="numberDecimal"
-                    android:hint="Tips"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
             </LinearLayout>

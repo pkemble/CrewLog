@@ -5,31 +5,31 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:ignore="MergeRootFrame">
-    <LinearLayout
-        android:orientation="horizontal"
-        android:background="#f00"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <Button
-            android:id="@+id/btn_delete_logbook"
-            android:text="DELETE DB"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="invisible"/>
+    <!--<LinearLayout-->
+        <!--android:orientation="horizontal"-->
+        <!--android:background="#f00"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content">-->
+        <!--<Button-->
+            <!--android:id="@+id/btn_delete_logbook"-->
+            <!--android:text="DELETE DB"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:visibility="invisible"/>-->
 
-        <Button
-            android:id="@+id/btn_export_logbook"
-            android:text="EXPORT DB"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="invisible"/>
-        <Button
-            android:id="@+id/btn_populate_logbook"
-            android:text="POPULATE DB"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="invisible"/>
-    </LinearLayout>
+        <!--<Button-->
+            <!--android:id="@+id/btn_export_logbook"-->
+            <!--android:text="EXPORT DB"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:visibility="invisible"/>-->
+        <!--<Button-->
+            <!--android:id="@+id/btn_populate_logbook"-->
+            <!--android:text="POPULATE DB"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:visibility="invisible"/>-->
+    <!--</LinearLayout>-->
     <FrameLayout
     android:id="@+id/fl_main"
     android:layout_width="match_parent"

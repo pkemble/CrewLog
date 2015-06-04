@@ -1,0 +1,23 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools" tools:context=".FlightLog">
+    <item android:id="@+id/action_settings"
+        android:title="@string/action_settings"
+        android:icon="@drawable/ic_settings_white_24dp"
+        android:orderInCategory="100"
+        app:showAsAction="always" />
+    <item android:id="@+id/export_logbook"
+        android:title="@string/action_export"
+        android:icon="@drawable/abc_ic_menu_share_mtrl_alpha"
+        app:showAsAction="always" />
+    <group android:id="@+id/debug_menu"
+        android:menuCategory="system"
+        android:visible="false">
+        <item android:id="@+id/db_delete"
+            android:title="DB Delete" />
+        <item android:id="@+id/db_export"
+            android:title="DB Export" />
+        <item android:id="@+id/db_populate"
+            android:title="DB Populate" />
+    </group>
+</menu>

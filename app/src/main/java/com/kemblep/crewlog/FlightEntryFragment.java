@@ -35,7 +35,7 @@ public class FlightEntryFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
-        final View vEntry = inflater.inflate(R.layout.fragment_log_entry, container, false);
+        final View vEntry = inflater.inflate(R.layout.fragment_flight, container, false);
         final Button btnSubmit = (Button) vEntry.findViewById(R.id.btn_submit_leg);
 
         mContext = vEntry.getContext();

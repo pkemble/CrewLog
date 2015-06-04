@@ -39,25 +39,31 @@ public class DbUtilities {
         Log.d(TAG, "Dropped both tables");
     }
 
-    public void backupDatabase() throws IOException {
+    public void backupDatabase() {
         //Open your local db as the input stream
         String inFileName = "/data/data/com.kemblep.crewlog/databases/crewlog";
         File dbFile = new File(inFileName);
-        FileInputStream fis = new FileInputStream(dbFile);
+        FileInputStream fis = null;
+        try {
+            fis = new FileInputStream(dbFile);
 
-        String outFileName = Environment.getExternalStorageDirectory()+"/crewlog";
-        //Open the empty db as the output stream
-        OutputStream output = new FileOutputStream(outFileName);
-        //transfer bytes from the inputfile to the outputfile
-        byte[] buffer = new byte[1024];
-        int length;
-        while ((length = fis.read(buffer))>0){
-            output.write(buffer, 0, length);
+
+            String outFileName = Environment.getExternalStorageDirectory()+"/crewlog";
+            //Open the empty db as the output stream
+            OutputStream output = new FileOutputStream(outFileName);
+            //transfer bytes from the inputfile to the outputfile
+            byte[] buffer = new byte[1024];
+            int length;
+            while ((length = fis.read(buffer))>0){
+                output.write(buffer, 0, length);
+            }
+            //Close the streams
+            output.flush();
+            output.close();
+            fis.close();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        //Close the streams
-        output.flush();
-        output.close();
-        fis.close();
     }
 
     public void populateLogbook(){

@@ -59,10 +59,18 @@ public class LogbookDbAdapter {
         }
         return row;
     }
+    public Cursor getLogbookEntry(String date, String tailNumber){
+        String[] clause = new String[] { date, tailNumber };
+        Cursor c = this.mDb.query(this.mTableName, null, "ENTRYDATE = ? AND TAILNUMBER = ?", clause, null, null, null);
+        if(c != null){
+            Log.d(TAG, "Retrieved (" + c.getCount() + ") log entries for " + date + " on " + tailNumber);
+        }
+        return c;
+    }
 
     public Cursor getLogbookEntry(String date){
-        String[] dateString = new String[] { date };
-        Cursor c = this.mDb.query(this.mTableName, null, "ENTRYDATE = ?", dateString, null, null, null);
+        String[] clause = new String[] { date };
+        Cursor c = this.mDb.query(this.mTableName, null, "ENTRYDATE = ?", clause, null, null, null);
         if(c != null){
             Log.d(TAG, "Retrieved (" + c.getCount() + ") log entries for " + date);
         }

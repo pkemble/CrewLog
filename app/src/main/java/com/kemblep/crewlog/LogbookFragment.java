@@ -1,17 +1,17 @@
 package com.kemblep.crewlog;
 
-import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -19,6 +19,7 @@ import android.widget.LinearLayout;
 
 import com.kemblep.crewlog.obj.Flight;
 import com.kemblep.crewlog.obj.LogbookEntry;
+import com.kemblep.crewlog.obj.SelectEntryDialog;
 import com.kemblep.crewlog.obj.Util;
 
 import java.text.SimpleDateFormat;
@@ -44,7 +45,8 @@ public class LogbookFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        mFlightLogView = inflater.inflate(R.layout.fragment_flight_log, container, false);
+        setHasOptionsMenu(true);
+        mFlightLogView = inflater.inflate(R.layout.fragment_logbook, container, false);
 
         mContext = mFlightLogView.getContext();
 
@@ -93,48 +95,43 @@ public class LogbookFragment extends Fragment {
         populateLogEntry();
     }
 
+    private void getLogbookEntry(Date date){
+        getLogbookEntry(date, null);
+    }
 
-    private void getLogbookEntry(Date date) {
-        //get an array (mostly just one) of logbook entries
-        final ArrayList<LogbookEntry> logEntries = LogbookEntry.getLogbookEntry(date, mContext);
+    private void getLogbookEntry(Date date, String tailNumber) {
+        //get an array of logbook entries for the date / tail
+        final ArrayList<LogbookEntry> logEntries = LogbookEntry.getLogbookEntry(date, tailNumber, mContext);
         //check if there's more than one returned
         if(logEntries.size() > 1){
             //pop up a list dialog to pick the right one
-            final AlertDialog.Builder bSingle = new AlertDialog.Builder(mContext);
-            final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(mContext,
-                    android.R.layout.select_dialog_singlechoice);
 
-            for (LogbookEntry e : logEntries) {
-                String lineItem = e.EntryDate;
-                if (e.TailNumber != null) {
-                    lineItem += " : " + e.TailNumber;
-                }
-                arrayAdapter.add(lineItem);
-            }
-
-            bSingle.setSingleChoiceItems(arrayAdapter, 0, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    mLogbookEntry = logEntries.get(which);
-                    dialog.dismiss();
-                    populateLogEntry();
-                }
-            });
-            AlertDialog dialog = bSingle.create();
+            SelectEntryDialog dialog = new SelectEntryDialog(logEntries, mContext);
             dialog.show();
+            mLogbookEntry = dialog.SelectedEntry;
         } else if(logEntries.size() == 1) {
             mLogbookEntry = logEntries.get(0);
         }
     }
 
-    private long submitFlightLog() {
-        getFormValues();
-        return mLogbookEntry.insertLogbookEntry(mContext);
+    private long submitFlightLog(){
+        return submitFlightLog(false);
     }
 
-    private long updateFlightLog(){
+    private long submitFlightLog(boolean createAdditionalEntry) {
         getFormValues();
-        return mLogbookEntry.updateLogbookEntry(mContext);
+        if(createAdditionalEntry){
+            return mLogbookEntry.insertLogbookEntry(mContext);
+        }
+        ArrayList<LogbookEntry> dupes = LogbookEntry.getLogbookEntry(mDate, mLogbookEntry.TailNumber, mContext);
+        long l = -1;
+        if(dupes.size() > 0){
+            l= mLogbookEntry.updateLogbookEntry(mContext);
+        } else {
+            l = mLogbookEntry.insertLogbookEntry(mContext);
+        }
+        populateLogEntry();
+        return l;
     }
 
     private void getFormValues(){
@@ -223,34 +220,28 @@ public class LogbookFragment extends Fragment {
                     b.putInt("SEQUENCE", (int) newEntryId);
                 } else {
                     //update the logbook entry
-                    updateFlightLog(); //TODO seems a little auspicious that mLogbookEntry is being updated here
+                    submitFlightLog(); //TODO seems a little auspicious that mLogbookEntry is being updated here
                     b.putInt("SEQUENCE", mLogbookEntry.Id);
                 }
                 createEntryFragment(b);
             }
         });
-
     }
 
     private void setupSubmitUpdateButton() {
         Button btnSubmit = (Button) mFlightLogView.findViewById(R.id.btn_update_flightlog);
         if(mLogbookEntry.Id != null){
             btnSubmit.setText("Update Logbook Entry");
-            btnSubmit.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    updateFlightLog();
-                }
-            });
         } else {
             btnSubmit.setText("Submit Logbook Entry");
-            btnSubmit.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    submitFlightLog();
-                }
-            });
         }
+
+        btnSubmit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                submitFlightLog(true);
+            }
+        });
     }
 
     private void createEntryFragment(Bundle b){
@@ -262,4 +253,25 @@ public class LogbookFragment extends Fragment {
         ft.addToBackStack("Flight Entry");
         ft.commit();
     }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_logbook_entry, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        switch (id){
+            case R.id.action_add_entry:
+                mLogbookEntry = new LogbookEntry();
+                mDate = new Date();
+                populateLogEntry();
+                break;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
 }

@@ -70,7 +70,7 @@ public class LogbookEntry {
     public long insertLogbookEntry(Context context) {
         try {
 
-            //TODO handle multiple entries for the same date
+            //TODO handle multiple entries for the same date and tailnumber
             LogbookDbAdapter lba = new LogbookDbAdapter(context);
             lba.open();
             long entryId = lba.insertLogbookEntry(this.getContentValues());
@@ -108,11 +108,12 @@ public class LogbookEntry {
         return -1;
     }
 
-    public static ArrayList<LogbookEntry> getLogbookEntry(Date date, Context context){
+    public static ArrayList<LogbookEntry> getLogbookEntry(Date date, String tailNumber, Context context){
         String simpleDate = Util.CustomSimpleDate(date);
         LogbookDbAdapter dba = new LogbookDbAdapter(context);
         dba.open();
-        Cursor l = dba.getLogbookEntry(simpleDate);
+        Cursor l = tailNumber != null ? dba.getLogbookEntry(simpleDate, tailNumber)
+                : dba.getLogbookEntry(simpleDate);
         //TODO handle counts > 1
         if(l.getCount() > 1){
             Log.d(TAG, "Found " + l.getCount() + " Logbok entries for " + date);
