@@ -17,37 +17,44 @@
                 android:text="Role:"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
-            <RadioGroup
+            <Switch
+                android:id="@+id/sw_role"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textOn="@string/PF"
+                android:textOff="@string/PM"/>
+
+            <!--<RadioGroup
                 android:id="@+id/fl_flight_type"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
-                <RadioButton
-                    android:id="@+id/fl_pf"
-                    android:checked="true"
-                    android:text="PF"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+              <RadioButton-->
+                    <!--android:id="@+id/fl_pf"-->
+                    <!--android:checked="true"-->
+                    <!--android:text="PF"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content" />-->
 
-                <RadioButton
-                    android:id="@+id/fl_pm"
-                    android:text="PM"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                <!--<RadioButton-->
+                    <!--android:id="@+id/fl_pm"-->
+                    <!--android:text="PM"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content" />-->
 
-                <RadioButton
-                    android:id="@+id/fl_sf"
-                    android:text="SF"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                <!--<RadioButton-->
+                    <!--android:id="@+id/fl_sf"-->
+                    <!--android:text="SF"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content" />-->
 
-                <RadioButton
-                    android:id="@+id/fl_sm"
-                    android:text="SM"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-            </RadioGroup>
+                <!--<RadioButton-->
+                    <!--android:id="@+id/fl_sm"-->
+                    <!--android:text="SM"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content" />-->
+            <!--</RadioGroup>-->
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

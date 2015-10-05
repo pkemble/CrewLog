@@ -22,16 +22,15 @@ public class LogbookEntry {
     public String TailNumber;
     public String FlightNumber;
     public String CrewMember;
+    public Integer Seat;
     public ArrayList<Flight> Flights = new ArrayList<>();
     public long Duty;
     public long CrewMeals;
-    public long Tips;
+    public long Expenses;
     public String Remarks;
 
     public LogbookEntry() {
     }
-
-
 
     public enum Columns {
         ID,
@@ -39,9 +38,10 @@ public class LogbookEntry {
         ENTRYDATE,
         TAILNUMBER,
         FLIGHTNUMBER,
-        CREWNAME,
+        PIC,
+        SIC,
         CREWMEAL,
-        TIPS,
+        EXPENSES,
         REMARKS;
     }
     public ContentValues getContentValues() {
@@ -55,13 +55,13 @@ public class LogbookEntry {
         if(FlightNumber != null) {
             values.put(Columns.FLIGHTNUMBER.name(), FlightNumber);
         }
-        if(CrewMember != null) {
-            values.put(Columns.CREWNAME.name(), CrewMember);
+        if(CrewMember != null) { //TODO: left/right seat determination
+            values.put(Columns.PIC.name(), CrewMember);
         }
 
         values.put(Columns.DUTY.name(), Duty);
         values.put(Columns.CREWMEAL.name(), CrewMeals);
-        values.put(Columns.TIPS.name(), Tips);
+        values.put(Columns.EXPENSES.name(), Expenses);
         values.put(Columns.REMARKS.name(), Remarks);
 
         return values;
@@ -108,6 +108,26 @@ public class LogbookEntry {
         return -1;
     }
 
+    public void deleteLogbookEntry(Context context) {
+        try {
+            LogbookDbAdapter dba = new LogbookDbAdapter(context);
+            dba.open();
+            dba.deleteLogbookEntry(this.Id);
+
+            //get them flights too
+            for(Flight f : this.Flights){
+                f.deleteFlight(context);
+            }
+
+            Log.d(TAG, "Deleted logbook entry ID " + this.Id);
+        } catch (Exception e){
+            Log.e(TAG, "Unable to delete entry ID " + this.Id);
+            Log.e(TAG, e.getMessage());
+        }
+
+    }
+
+
     public static ArrayList<LogbookEntry> getLogbookEntry(Date date, String tailNumber, Context context){
         String simpleDate = Util.CustomSimpleDate(date);
         LogbookDbAdapter dba = new LogbookDbAdapter(context);
@@ -129,9 +149,9 @@ public class LogbookEntry {
                 cursorEntry.EntryDate = l.getString(l.getColumnIndexOrThrow(Columns.ENTRYDATE.name()));
                 cursorEntry.TailNumber = l.getString(l.getColumnIndexOrThrow(Columns.TAILNUMBER.name()));
                 cursorEntry.FlightNumber = l.getString(l.getColumnIndexOrThrow(Columns.FLIGHTNUMBER.name()));
-                cursorEntry.CrewMember = l.getString(l.getColumnIndexOrThrow(Columns.CREWNAME.name()));
+                cursorEntry.CrewMember = l.getString(l.getColumnIndexOrThrow(Columns.PIC.name())); //TODO: sort out pic/sic
                 cursorEntry.CrewMeals = l.getLong(l.getColumnIndexOrThrow(Columns.CREWMEAL.name()));
-                cursorEntry.Tips = l.getLong(l.getColumnIndexOrThrow(Columns.TIPS.name()));
+                cursorEntry.Expenses = l.getLong(l.getColumnIndexOrThrow(Columns.EXPENSES.name()));
 
                 //add the legs
                 FlightDbAdapter flightDbAdapter = new FlightDbAdapter(context);

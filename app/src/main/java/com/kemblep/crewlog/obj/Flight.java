@@ -49,9 +49,7 @@ public class Flight {
 
     public enum FlightTypes {
         PF,
-        PM,
-        SF,
-        SM;
+        PM;
 
         public static FlightTypes valueOfInt(int i) {
             for(FlightTypes f : values()){
@@ -164,5 +162,20 @@ public class Flight {
             Log.e(TAG, "Couldn't update entry ID " + flightEntryId + " for sequence " + flight.Sequence);
         }
         return flightEntryId;
+    }
+
+    public void deleteFlight(Context context){
+        FlightDbAdapter dba = new FlightDbAdapter(context);
+        dba.open();
+        dba.deleteFlightById(this.Id);
+        Log.d(TAG, "Deleted flight with ID " + this.Id);
+    }
+
+    //probably won't need this
+    public void deleteFlightsForEntry(Context context, Integer seq){
+        FlightDbAdapter dba = new FlightDbAdapter(context);
+        dba.open();
+        dba.deleteFlightBySequence(seq);
+        Log.d(TAG, "Deleted flight for sequence (logbook ID)  " + seq);
     }
 }

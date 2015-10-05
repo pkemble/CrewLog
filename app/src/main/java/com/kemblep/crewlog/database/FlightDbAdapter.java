@@ -52,6 +52,22 @@ public class FlightDbAdapter {
         return row;
     }
 
+    public void deleteFlightById(Integer id) {
+        if(mDb == null){
+            Log.e(TAG, "Database null; invoke .open() first.");
+        }
+        String[] idString = new String[] { id.toString() };
+        this.mDb.delete(mTableName, "ID = ?", idString);
+    }
+
+    public void deleteFlightBySequence(Integer seq) {
+        if(mDb == null){
+            Log.e(TAG, "Database null; invoke .open() first.");
+        }
+        String[] seqString = new String[] { seq.toString() };
+        this.mDb.delete(mTableName, "SEQUENCE = ?", seqString);
+    }
+
     public Cursor getFlightById(Integer id){
         String[] idString = new String[]{ id.toString() };
         Cursor c = this.mDb.query(this.mTableName, null, "ID=?", idString, null, null, null);
@@ -73,5 +89,4 @@ public class FlightDbAdapter {
     public void close(){
         this.mDb.close();
     }
-
 }

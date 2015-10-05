@@ -59,6 +59,14 @@ public class LogbookDbAdapter {
         }
         return row;
     }
+    public void deleteLogbookEntry(Integer id) {
+        if(mDb == null){
+            Log.e(TAG, "Database null; invoke .open() first.");
+        }
+        String[] idString = new String[] { id.toString() };
+        this.mDb.delete(mTableName, "ID = ?", idString);
+    }
+
     public Cursor getLogbookEntry(String date, String tailNumber){
         String[] clause = new String[] { date, tailNumber };
         Cursor c = this.mDb.query(this.mTableName, null, "ENTRYDATE = ? AND TAILNUMBER = ?", clause, null, null, null);

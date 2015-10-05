@@ -15,15 +15,21 @@ import java.util.ArrayList;
 public class SelectEntryDialog extends AlertDialog {
 
     public LogbookEntry SelectedEntry;
-
-    public SelectEntryDialog(final ArrayList<LogbookEntry> logEntries, Context context){
+    private ArrayList<LogbookEntry> mLogEntries;
+    private Context mContext;
+    public SelectEntryDialog(ArrayList<LogbookEntry> logEntires, Context context){
         super(context);
+        mContext = context;
+        mLogEntries = logEntires;
 
-        final AlertDialog.Builder bSingle = new AlertDialog.Builder(context);
-        final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(context,
+    }
+    public SelectEntryDialog init(){
+
+        final AlertDialog.Builder bSingle = new AlertDialog.Builder(mContext);
+        final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(mContext,
                 android.R.layout.select_dialog_singlechoice);
 
-        for (LogbookEntry e : logEntries) {
+        for (LogbookEntry e : mLogEntries) {
             String lineItem = e.EntryDate;
             if (e.TailNumber != null) {
                 lineItem += " : " + e.TailNumber;
@@ -34,11 +40,12 @@ public class SelectEntryDialog extends AlertDialog {
         bSingle.setSingleChoiceItems(arrayAdapter, 0, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                SelectedEntry = logEntries.get(which);
+                SelectedEntry = mLogEntries.get(which);
                 dialog.dismiss();
             }
         });
 
         bSingle.create();
+        return this;
     }
 }

@@ -108,7 +108,7 @@ public class DbUtilities {
         fakeEntry.Flights.add(flight2);
         fakeEntry.Duty = 24;
         fakeEntry.CrewMeals = 0;
-        fakeEntry.Tips = 2;
+        fakeEntry.Expenses = 2;
 
         fakeEntry.insertLogbookEntry(mContext);
     }

@@ -12,7 +12,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.RadioButton;
+import android.widget.Switch;
 import android.widget.Toast;
 
 import com.kemblep.crewlog.obj.Flight;
@@ -163,25 +163,11 @@ public class FlightEntryFragment extends Fragment {
     }
 
     public void populateEntry(View flightLogEntryView, Flight flight){
-        //RadioGroup flTypeGroup = (RadioGroup) flightLogEntryView.findViewById(R.id.fl_flight_type);
-        RadioButton pf = (RadioButton) flightLogEntryView.findViewById(R.id.fl_pf);
-        RadioButton pm = (RadioButton) flightLogEntryView.findViewById(R.id.fl_pm);
-        RadioButton sf = (RadioButton) flightLogEntryView.findViewById(R.id.fl_sf);
-        RadioButton sm = (RadioButton) flightLogEntryView.findViewById(R.id.fl_sm);
-
-        switch (flight.FlightType){
-            case PF:
-                pf.setChecked(true);
-                break;
-            case PM:
-                pm.setChecked(true);
-                break;
-            case SF:
-                sf.setChecked(true);
-                break;
-            case SM:
-                sm.setChecked(true);
-                break;
+        Switch swRole = (Switch) flightLogEntryView.findViewById(R.id.sw_role);
+        if(flight.FlightType == Flight.FlightTypes.PF){
+            swRole.setChecked(true);
+        } else {
+            swRole.setChecked(false);
         }
 
         EditText flDeparture = (EditText) flightLogEntryView.findViewById(R.id.fl_dep);
@@ -212,6 +198,10 @@ public class FlightEntryFragment extends Fragment {
         flNightLndg.setChecked(flight.NightLanding);
     }
 
+    private void deleteLeg(){
+        if(mId == null) return;
+    }
+
     private void submitLeg(View flightLogEntryView){
 
         Flight flight = new Flight();
@@ -224,22 +214,11 @@ public class FlightEntryFragment extends Fragment {
             flight.Sequence = mSequence;
         }
 
-        RadioButton pf = (RadioButton) flightLogEntryView.findViewById(R.id.fl_pf);
-        RadioButton pm = (RadioButton) flightLogEntryView.findViewById(R.id.fl_pm);
-        RadioButton sf = (RadioButton) flightLogEntryView.findViewById(R.id.fl_sf);
-        RadioButton sm = (RadioButton) flightLogEntryView.findViewById(R.id.fl_sm);
-        //TODO have to implement the commented out stuff above
-        if(pf.isChecked()){
+        Switch swRole = (Switch) flightLogEntryView.findViewById(R.id.sw_role);
+        if(swRole.isChecked()){
             flight.FlightType = Flight.FlightTypes.PF;
-        }
-        if(pm.isChecked()){
+        }else {
             flight.FlightType = Flight.FlightTypes.PM;
-        }
-        if(sf.isChecked()){
-            flight.FlightType = Flight.FlightTypes.SF;
-        }
-        if(sm.isChecked()){
-            flight.FlightType = Flight.FlightTypes.SM;
         }
 
         EditText flDeparture = (EditText) flightLogEntryView.findViewById(R.id.fl_dep);

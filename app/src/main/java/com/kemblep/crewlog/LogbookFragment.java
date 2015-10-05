@@ -1,7 +1,9 @@
 package com.kemblep.crewlog;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -17,9 +19,9 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
+import com.kemblep.crewlog.obj.EntryAdapter;
 import com.kemblep.crewlog.obj.Flight;
 import com.kemblep.crewlog.obj.LogbookEntry;
-import com.kemblep.crewlog.obj.SelectEntryDialog;
 import com.kemblep.crewlog.obj.Util;
 
 import java.text.SimpleDateFormat;
@@ -41,16 +43,17 @@ public class LogbookFragment extends Fragment {
     private Context mContext;
     private LogbookEntry mLogbookEntry;
     private View mFlightLogView;
+    private boolean mAdditionalEntry;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
+
 
         setHasOptionsMenu(true);
         mFlightLogView = inflater.inflate(R.layout.fragment_logbook, container, false);
 
         mContext = mFlightLogView.getContext();
-
-        mLogbookEntry = new LogbookEntry();
 
         if (mDate == null) {
             mDate = Calendar.getInstance().getTime();
@@ -77,6 +80,7 @@ public class LogbookFragment extends Fragment {
                         flDate.setText(mSdf.format(mDate));
                         setupLogbookFragment();
                     }
+
                 }, year, month, day);
                 datePickerDialog.show();
             }
@@ -88,6 +92,8 @@ public class LogbookFragment extends Fragment {
     }
 
     private void setupLogbookFragment(){
+        mLogbookEntry = new LogbookEntry();
+
         Log.d(TAG, "Getting legs for " + mSdf.format(mDate));
         getLogbookEntry(mDate);
 
@@ -105,10 +111,22 @@ public class LogbookFragment extends Fragment {
         //check if there's more than one returned
         if(logEntries.size() > 1){
             //pop up a list dialog to pick the right one
+            final AlertDialog.Builder bSingle = new AlertDialog.Builder(mContext);
+            EntryAdapter entryAdapter = new EntryAdapter(mContext, logEntries);
 
-            SelectEntryDialog dialog = new SelectEntryDialog(logEntries, mContext);
+            bSingle.setTitle(R.string.select_multiple_title);
+            bSingle.setSingleChoiceItems(entryAdapter, 0, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    mLogbookEntry = logEntries.get(which);
+                    dialog.dismiss();
+                    populateLogEntry();
+                }
+            });
+
+            AlertDialog dialog = bSingle.create();
             dialog.show();
-            mLogbookEntry = dialog.SelectedEntry;
+
         } else if(logEntries.size() == 1) {
             mLogbookEntry = logEntries.get(0);
         }
@@ -120,11 +138,15 @@ public class LogbookFragment extends Fragment {
 
     private long submitFlightLog(boolean createAdditionalEntry) {
         getFormValues();
+
+        long l;
+
         if(createAdditionalEntry){
-            return mLogbookEntry.insertLogbookEntry(mContext);
+            l = mLogbookEntry.insertLogbookEntry(mContext);
+            populateLogEntry();
+            return l;
         }
         ArrayList<LogbookEntry> dupes = LogbookEntry.getLogbookEntry(mDate, mLogbookEntry.TailNumber, mContext);
-        long l = -1;
         if(dupes.size() > 0){
             l= mLogbookEntry.updateLogbookEntry(mContext);
         } else {
@@ -132,6 +154,37 @@ public class LogbookFragment extends Fragment {
         }
         populateLogEntry();
         return l;
+    }
+
+    private void deleteFlightLog() {
+        String entryToDelete, crew = null;
+        if(mLogbookEntry.CrewMember != null){
+            crew = " with " + mLogbookEntry.CrewMember;
+        }
+        entryToDelete= mLogbookEntry.EntryDate + "\n" +
+                mLogbookEntry.TailNumber + crew + "\n" +
+                "; " + mLogbookEntry.Flights.size() + " flight(s)";
+
+        AlertDialog dialog = new AlertDialog.Builder(mContext)
+                .setCancelable(true)
+                .setIcon(R.drawable.ic_report_problem_black_24dp)
+                .setTitle("Confirm Deleting:")
+                .setMessage(entryToDelete)
+                .setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        mLogbookEntry.deleteLogbookEntry(mContext);
+                        dialog.dismiss();
+                        setupLogbookFragment();
+                    }
+
+                })
+                .setNegativeButton("Cancel", null)
+                .create();
+        dialog.show();
+
+
+
     }
 
     private void getFormValues(){
@@ -148,7 +201,7 @@ public class LogbookFragment extends Fragment {
         mLogbookEntry.FlightNumber = flFlightNumber.getText().toString();
         mLogbookEntry.CrewMember = flCrewMember.getText().toString();
         mLogbookEntry.CrewMeals = Long.parseLong(flCrewMeals.getText().toString());
-        mLogbookEntry.Tips = Long.parseLong(flTips.getText().toString());
+        mLogbookEntry.Expenses = Long.parseLong(flTips.getText().toString());
         mLogbookEntry.Remarks = flRemarks.getText().toString();
     }
 
@@ -160,11 +213,18 @@ public class LogbookFragment extends Fragment {
         EditText flTips = (EditText) mFlightLogView.findViewById(R.id.fl_tips);
         EditText flRemarks = (EditText) mFlightLogView.findViewById(R.id.fl_remarks);
 
+        flTailNumber.setText("");
+        flFlightNumber.setText("");
+        flCrewMember.setText("");
+        flCrewMeals.setText("");
+        flTailNumber.setText("");
+        flRemarks.setText("");
+
         flTailNumber.setText(mLogbookEntry.TailNumber);
         flFlightNumber.setText(mLogbookEntry.FlightNumber);
         flCrewMember.setText(mLogbookEntry.CrewMember);
         flCrewMeals.setText(Long.toString(mLogbookEntry.CrewMeals)); //TODO test this
-        flTips.setText(Long.toString(mLogbookEntry.Tips));
+        flTips.setText(Long.toString(mLogbookEntry.Expenses));
         flRemarks.setText(mLogbookEntry.Remarks);
 
         setupSubmitUpdateButton();
@@ -176,6 +236,8 @@ public class LogbookFragment extends Fragment {
 
     private void setupLegButtons() {
         LinearLayout flLinearLayout = (LinearLayout) mFlightLogView.findViewById(R.id.fl_flight_list);
+
+        flLinearLayout.removeAllViews();
 
         for(int i = 0; i < mLogbookEntry.Flights.size(); i++){
             final Flight flight = mLogbookEntry.Flights.get(i);
@@ -200,11 +262,6 @@ public class LogbookFragment extends Fragment {
             ViewGroup.LayoutParams lp = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                     ViewGroup.LayoutParams.WRAP_CONTENT);
             flLinearLayout.addView(btnLeg, new ViewGroup.LayoutParams(lp));
-        }
-
-        //remove leg buttons if current log has no legs
-        if(mLogbookEntry.Flights.size() == 0){
-            flLinearLayout.removeAllViews();
         }
 
         Button btnAddFlight = (Button) mFlightLogView.findViewById(R.id.btn_add_flight);
@@ -239,7 +296,7 @@ public class LogbookFragment extends Fragment {
         btnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                submitFlightLog(true);
+                submitFlightLog();
             }
         });
     }
@@ -267,11 +324,12 @@ public class LogbookFragment extends Fragment {
             case R.id.action_add_entry:
                 mLogbookEntry = new LogbookEntry();
                 mDate = new Date();
-                populateLogEntry();
+                submitFlightLog(true);
                 break;
+            case R.id.action_delete_entry:
+                deleteFlightLog();
         }
 
         return super.onOptionsItemSelected(item);
     }
-
 }

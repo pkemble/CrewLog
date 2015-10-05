@@ -1,24 +1,20 @@
 package com.kemblep.crewlog;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import com.kemblep.crewlog.database.DbUtilities;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
-
 public class CrewLog extends ActionBarActivity {
 
-    private Date mDate;
-    private SimpleDateFormat mSdf = new SimpleDateFormat("MM/dd/yyyy");
     private final String TAG = CrewLog.class.getName();
     private Context mContext;
-    public DbUtilities DbUtilities;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +26,17 @@ public class CrewLog extends ActionBarActivity {
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.fl_main, new LogbookFragment())
+                    .commit();
+        }
+
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDefaultDisplayHomeAsUpEnabled(true);
+
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(mContext);
+        if(preferences.getString("pref_pilot_name", null) == null){
+            getFragmentManager().beginTransaction()
+                    .replace(R.id.fl_main, new SettingsFragment())
+                    .addToBackStack("Flight Entry")
                     .commit();
         }
     }
@@ -54,6 +61,10 @@ public class CrewLog extends ActionBarActivity {
 
         switch (id){
             case R.id.action_settings:
+                getFragmentManager().beginTransaction()
+                        .replace(R.id.fl_main, new SettingsFragment())
+                        .addToBackStack("Flight Entry")
+                        .commit();
                 break;
             case R.id.db_delete:
                 dbUtilities.dropTables();
@@ -67,35 +78,4 @@ public class CrewLog extends ActionBarActivity {
         }
         return super.onOptionsItemSelected(item);
     }
-
-//    private void setupDebug(){
-//        final DbUtilities dbUtilities = new DbUtilities(mContext);
-//
-//        Button btnDelete = (Button) findViewById(R.id.btn_delete_logbook);
-//        btnDelete.setVisibility(View.VISIBLE);
-//        btnDelete.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                dbUtilities.dropTables();
-//            }
-//        });
-//
-//        Button btnExport = (Button) findViewById(R.id.btn_export_logbook);
-//        btnExport.setVisibility(View.VISIBLE);
-//        btnExport.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                dbUtilities.backupDatabase();
-//            }
-//        });
-//
-//        Button btnPopulate = (Button) findViewById(R.id.btn_populate_logbook);
-//        btnPopulate.setVisibility(View.VISIBLE);
-//        btnPopulate.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                dbUtilities.populateLogbook();
-//            }
-//        });
-//    }
 }

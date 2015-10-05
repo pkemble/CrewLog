@@ -6,4 +6,7 @@
         android:title="@string/action_add_entry"
         android:icon="@drawable/ic_add_white_24dp"
         app:showAsAction="always"/>
+    <item android:id="@+id/action_delete_entry"
+        android:title="@string/action_delete_entry"
+        app:showAsAction="never"/>
 </menu>

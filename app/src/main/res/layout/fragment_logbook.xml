@@ -5,7 +5,6 @@
     android:layout_height="match_parent">
     <FrameLayout
         android:id="@+id/fl_edit_entry_frame"
-        android:background="#090"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="fill"/>
@@ -19,16 +18,45 @@
             android:layout_height="wrap_content"
             android:layout_margin="5dp">
 
-            <TextView
-                android:text="Date: "
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-            <EditText
-                android:id="@+id/fl_date"
-                android:minEms="5"
-                android:focusable="false"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <TextView
+                        android:text="Date: "
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                    <EditText
+                        android:id="@+id/fl_date"
+                        android:minEms="5"
+                        android:focusable="false"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <TextView
+                        android:text="Role: "
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                    <Switch
+                        android:id="@+id/sw_seat"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textOn="@string/seat_PIC"
+                        android:textOff="@string/seat_SIC"/>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
 
             <LinearLayout
                 android:orientation="horizontal"
