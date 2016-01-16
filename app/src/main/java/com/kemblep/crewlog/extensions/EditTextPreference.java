@@ -9,7 +9,8 @@ import android.util.AttributeSet;
 public class EditTextPreference extends android.preference.EditTextPreference { //TODO: get this to be implemented
     public EditTextPreference(Context context, AttributeSet attrs) {
         super(context, attrs);
-    }
+    } //TODO: get this to be implemented
+
 
     @Override
     protected void onDialogClosed(boolean positiveResult) {

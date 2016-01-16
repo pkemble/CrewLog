@@ -43,15 +43,13 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
                     <TextView
-                        android:text="Role: "
+                        android:text="PIC: "
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
-                    <Switch
-                        android:id="@+id/sw_seat"
+                    <CheckBox
+                        android:id="@+id/cb_seat"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textOn="@string/seat_PIC"
-                        android:textOff="@string/seat_SIC"/>
+                        android:layout_height="wrap_content" />
 
                 </LinearLayout>
 
