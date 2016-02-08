@@ -11,9 +11,10 @@
     <string name="action_export">Export Logbook</string>
 
     <string name="pref_pilot_name">Your Name</string>
-    <string name="pref_flight_number">Default Flight Number</string>
-    <string name="pref_tail_number_pattern">Default Tail Number Pattern</string>
-    <string name="pref_tail_number_summary">Insert an "*" to edit only that part of the tail number, e.g. "N*AF"</string>
+    <string name="pref_flight_number">Flight Number Pattern</string>
+    <string name="pref_flight_number_summary">Use "*" to create a pattern for quick entry, e.g. "CNS*"</string>
+    <string name="pref_tail_number_pattern">Tail Number Pattern</string>
+    <string name="pref_tail_number_summary">Use "*" to create a pattern for quick entry, e.g. "N*AF"</string>
 
     <string name="action_delete_entry">Delete Entry</string>
     <string name="seat_PIC">PIC</string>

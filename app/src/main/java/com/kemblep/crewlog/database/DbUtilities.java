@@ -80,6 +80,7 @@ public class DbUtilities {
         fakeEntry.EntryDate = Util.CustomSimpleDate(d);
         fakeEntry.FlightNumber = "CNS976";
         fakeEntry.CrewMember = "Bob Joe";
+        fakeEntry.Pic = true;
 
         Flight flight = new Flight();
         flight.Approaches = "0";

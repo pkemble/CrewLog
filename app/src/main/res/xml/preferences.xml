@@ -7,7 +7,8 @@
     <EditTextPreference
         android:id="@+id/pref_flight_number"
         android:key="pref_flight_number"
-        android:title="@string/pref_flight_number"/>
+        android:title="@string/pref_flight_number"
+        android:summary="" />
     <EditTextPreference
         android:id="@+id/pref_tail_number_pattern"
         android:key="pref_tail_number"

@@ -163,11 +163,11 @@ public class FlightEntryFragment extends Fragment {
     }
 
     public void populateEntry(View flightLogEntryView, Flight flight){
-        Switch swRole = (Switch) flightLogEntryView.findViewById(R.id.sw_role);
+        CheckBox cbRole = (CheckBox) flightLogEntryView.findViewById(R.id.cb_role);
         if(flight.FlightType == Flight.FlightTypes.PF){
-            swRole.setChecked(true);
+            cbRole.setChecked(true);
         } else {
-            swRole.setChecked(false);
+            cbRole.setChecked(false);
         }
 
         EditText flDeparture = (EditText) flightLogEntryView.findViewById(R.id.fl_dep);
@@ -214,10 +214,10 @@ public class FlightEntryFragment extends Fragment {
             flight.Sequence = mSequence;
         }
 
-        Switch swRole = (Switch) flightLogEntryView.findViewById(R.id.sw_role);
-        if(swRole.isChecked()){
+        CheckBox cbRole = (CheckBox) flightLogEntryView.findViewById(R.id.cb_role);
+        if(cbRole.isChecked()){
             flight.FlightType = Flight.FlightTypes.PF;
-        }else {
+        } else {
             flight.FlightType = Flight.FlightTypes.PM;
         }
 

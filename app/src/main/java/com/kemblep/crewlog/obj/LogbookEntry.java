@@ -22,7 +22,7 @@ public class LogbookEntry {
     public String TailNumber;
     public String FlightNumber;
     public String CrewMember;
-    public Integer Seat;
+    public boolean Pic;
     public ArrayList<Flight> Flights = new ArrayList<>();
     public long Duty;
     public long CrewMeals;
@@ -39,7 +39,7 @@ public class LogbookEntry {
         TAILNUMBER,
         FLIGHTNUMBER,
         PIC,
-        SIC,
+        CREWMEMBER,
         CREWMEAL,
         EXPENSES,
         REMARKS;

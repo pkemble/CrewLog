@@ -25,7 +25,8 @@ public class DbHelper extends SQLiteOpenHelper {
                     LogbookEntry.Columns.ENTRYDATE.name() + " TEXT," +
                     LogbookEntry.Columns.TAILNUMBER.name() + " TEXT," +
                     LogbookEntry.Columns.FLIGHTNUMBER.name() + " TEXT," +
-                    LogbookEntry.Columns.PIC.name() + " TEXT," +
+                    LogbookEntry.Columns.PIC.name() + " BOOLEAN," +
+                    LogbookEntry.Columns.CREWMEMBER.name() + "TEXT," +
                     LogbookEntry.Columns.CREWMEAL.name() + " INTEGER, " +
                     LogbookEntry.Columns.EXPENSES.name() + " INTEGER, " +
                     LogbookEntry.Columns.REMARKS.name() + " TEXT);";

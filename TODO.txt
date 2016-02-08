@@ -1,10 +1,11 @@
 todo
 
 replace pm/sm/pf/sf with pm / pf with left seat / right seat,
-crew name will be put in PIC/SIC accordingly
 
 actionbar / menu is a mess
 
 start sql monitor with an intent
 
-require a user/pilot name for seat determination
+require a user/pilot name for seat determination - USING PIC/BOOLEAN + CREWMEMBER NAME
+
+calendar marks days with entries

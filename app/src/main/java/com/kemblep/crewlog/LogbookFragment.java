@@ -15,6 +15,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -209,6 +210,7 @@ public class LogbookFragment extends Fragment {
         EditText flTailNumber = (EditText) mFlightLogView.findViewById(R.id.fl_tail_number);
         EditText flFlightNumber = (EditText) mFlightLogView.findViewById(R.id.fl_flight_number);
         EditText flCrewMember = (EditText) mFlightLogView.findViewById(R.id.fl_crew_member);
+        CheckBox cbSeat = (CheckBox) mFlightLogView.findViewById(R.id.cb_seat);
         EditText flCrewMeals = (EditText) mFlightLogView.findViewById(R.id.fl_crew_meals);
         EditText flTips = (EditText) mFlightLogView.findViewById(R.id.fl_tips);
         EditText flRemarks = (EditText) mFlightLogView.findViewById(R.id.fl_remarks);
@@ -216,6 +218,7 @@ public class LogbookFragment extends Fragment {
         flTailNumber.setText("");
         flFlightNumber.setText("");
         flCrewMember.setText("");
+        cbSeat.setChecked(false);
         flCrewMeals.setText("");
         flTailNumber.setText("");
         flRemarks.setText("");
@@ -223,6 +226,7 @@ public class LogbookFragment extends Fragment {
         flTailNumber.setText(mLogbookEntry.TailNumber);
         flFlightNumber.setText(mLogbookEntry.FlightNumber);
         flCrewMember.setText(mLogbookEntry.CrewMember);
+        cbSeat.setChecked(mLogbookEntry.Pic);
         flCrewMeals.setText(Long.toString(mLogbookEntry.CrewMeals)); //TODO test this
         flTips.setText(Long.toString(mLogbookEntry.Expenses));
         flRemarks.setText(mLogbookEntry.Remarks);

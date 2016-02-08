@@ -13,46 +13,19 @@
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-            <TextView
-                android:text="PF (PM unchecked):"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-            <CheckBox
-                android:id="@+id/sw_role"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-
-            <!--<RadioGroup
-                android:id="@+id/fl_flight_type"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
-
-              <RadioButton-->
-                    <!--android:id="@+id/fl_pf"-->
-                    <!--android:checked="true"-->
-                    <!--android:text="PF"-->
-                    <!--android:layout_width="wrap_content"-->
-                    <!--android:layout_height="wrap_content" />-->
-
-                <!--<RadioButton-->
-                    <!--android:id="@+id/fl_pm"-->
-                    <!--android:text="PM"-->
-                    <!--android:layout_width="wrap_content"-->
-                    <!--android:layout_height="wrap_content" />-->
-
-                <!--<RadioButton-->
-                    <!--android:id="@+id/fl_sf"-->
-                    <!--android:text="SF"-->
-                    <!--android:layout_width="wrap_content"-->
-                    <!--android:layout_height="wrap_content" />-->
-
-                <!--<RadioButton-->
-                    <!--android:id="@+id/fl_sm"-->
-                    <!--android:text="SM"-->
-                    <!--android:layout_width="wrap_content"-->
-                    <!--android:layout_height="wrap_content" />-->
-            <!--</RadioGroup>-->
+                <TextView
+                    android:text="PF (PM unchecked):"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <CheckBox
+                    android:id="@+id/cb_role"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+            </LinearLayout>
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -80,21 +53,6 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Block Out"/>
-                    <EditText
-                        android:id="@+id/fl_blockout"
-                        android:ems="4"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:inputType="number" />
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
                         android:text="Arrival"/>
                     <EditText
                         android:id="@+id/fl_arr"
@@ -102,6 +60,27 @@
                         android:inputType="textCapCharacters"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
+                </LinearLayout>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="6dp"
+                android:orientation="horizontal">
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Block Out"/>
+                    <EditText
+                        android:id="@+id/fl_blockout"
+                        android:ems="4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:inputType="number" />
                 </LinearLayout>
                 <LinearLayout
                     android:layout_width="wrap_content"
