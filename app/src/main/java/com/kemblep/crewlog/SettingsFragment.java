@@ -19,7 +19,7 @@ public class SettingsFragment extends PreferenceFragment {
 
         SharedPreferences preferences =
                 PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
-        if(preferences.getString("pref_pilot_name", null) == null){
+        if(preferences.getString(getResources().getString(R.string.pref_pilot_name), null) == null){
             Toast.makeText(getActivity().getApplicationContext(), "no name", Toast.LENGTH_LONG).show();
 
         }

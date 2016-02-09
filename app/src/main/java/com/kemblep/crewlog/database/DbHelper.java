@@ -21,7 +21,9 @@ public class DbHelper extends SQLiteOpenHelper {
     private final String LOGBOOK_TABLE_CREATE =
             "CREATE TABLE "+ LOGBOOK_TABLE_NAME + " (" +
                     LogbookEntry.Columns.ID.name() + " INTEGER PRIMARY KEY, " +
-                    LogbookEntry.Columns.DUTY.name() + " INTEGER," +
+                    LogbookEntry.Columns.PDSTART.name() + " TEXT," +
+                    LogbookEntry.Columns.PDEND.name() + " TEXT," +
+                    LogbookEntry.Columns.PDSSPAN.name() + " TEXT," +
                     LogbookEntry.Columns.ENTRYDATE.name() + " TEXT," +
                     LogbookEntry.Columns.TAILNUMBER.name() + " TEXT," +
                     LogbookEntry.Columns.FLIGHTNUMBER.name() + " TEXT," +

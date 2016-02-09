@@ -19,12 +19,14 @@ public class LogbookEntry {
 
     public Integer Id;
     public String EntryDate;
+    public String PDStart;
+    public String PDEnd;
+    public long PDSpan; //needed?
     public String TailNumber;
     public String FlightNumber;
     public String CrewMember;
     public boolean Pic;
     public ArrayList<Flight> Flights = new ArrayList<>();
-    public long Duty;
     public long CrewMeals;
     public long Expenses;
     public String Remarks;
@@ -34,7 +36,9 @@ public class LogbookEntry {
 
     public enum Columns {
         ID,
-        DUTY,
+        PDSTART,
+        PDEND,
+        PDSSPAN,
         ENTRYDATE,
         TAILNUMBER,
         FLIGHTNUMBER,
@@ -59,7 +63,9 @@ public class LogbookEntry {
             values.put(Columns.PIC.name(), CrewMember);
         }
 
-        values.put(Columns.DUTY.name(), Duty);
+        values.put(Columns.PDSTART.name(), PDStart);
+        values.put(Columns.PDEND.name(), PDEnd);
+        values.put(Columns.PDSSPAN.name(), PDSpan);
         values.put(Columns.CREWMEAL.name(), CrewMeals);
         values.put(Columns.EXPENSES.name(), Expenses);
         values.put(Columns.REMARKS.name(), Remarks);
@@ -145,7 +151,9 @@ public class LogbookEntry {
             do {
                 LogbookEntry cursorEntry = new LogbookEntry();
                 cursorEntry.Id = l.getInt(l.getColumnIndexOrThrow(Columns.ID.name()));
-                cursorEntry.Duty = l.getLong(l.getColumnIndexOrThrow(Columns.DUTY.name()));
+                cursorEntry.PDStart = l.getString(l.getColumnIndexOrThrow(Columns.PDSTART.name()));
+                cursorEntry.PDEnd = l.getString(l.getColumnIndexOrThrow(Columns.PDEND.name()));
+                cursorEntry.PDSpan = l.getLong(l.getColumnIndexOrThrow(Columns.PDSSPAN.name()));
                 cursorEntry.EntryDate = l.getString(l.getColumnIndexOrThrow(Columns.ENTRYDATE.name()));
                 cursorEntry.TailNumber = l.getString(l.getColumnIndexOrThrow(Columns.TAILNUMBER.name()));
                 cursorEntry.FlightNumber = l.getString(l.getColumnIndexOrThrow(Columns.FLIGHTNUMBER.name()));

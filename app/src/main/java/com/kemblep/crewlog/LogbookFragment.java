@@ -4,7 +4,9 @@ import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
@@ -43,7 +45,7 @@ public class LogbookFragment extends Fragment {
     private SimpleDateFormat mSdf = new SimpleDateFormat("MM/dd/yyyy");
     private Context mContext;
     private LogbookEntry mLogbookEntry;
-    private View mFlightLogView;
+    private View mLogbookEntryView;
     private boolean mAdditionalEntry;
 
     @Override
@@ -52,15 +54,15 @@ public class LogbookFragment extends Fragment {
 
 
         setHasOptionsMenu(true);
-        mFlightLogView = inflater.inflate(R.layout.fragment_logbook, container, false);
+        mLogbookEntryView = inflater.inflate(R.layout.fragment_logbook, container, false);
 
-        mContext = mFlightLogView.getContext();
+        mContext = mLogbookEntryView.getContext();
 
         if (mDate == null) {
             mDate = Calendar.getInstance().getTime();
         };
 
-        final EditText flDate = (EditText) mFlightLogView.findViewById(R.id.fl_date);
+        final EditText flDate = (EditText) mLogbookEntryView.findViewById(R.id.fl_date);
 
         flDate.setText(mSdf.format(mDate));
 
@@ -72,7 +74,7 @@ public class LogbookFragment extends Fragment {
                 int month = c.get(Calendar.MONTH);
                 int day = c.get(Calendar.DAY_OF_MONTH);
 
-                DatePickerDialog datePickerDialog = new DatePickerDialog(mFlightLogView.getContext(), new DatePickerDialog.OnDateSetListener() {
+                DatePickerDialog datePickerDialog = new DatePickerDialog(mLogbookEntryView.getContext(), new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                         Calendar newDate = Calendar.getInstance();
@@ -89,7 +91,7 @@ public class LogbookFragment extends Fragment {
 
         setupLogbookFragment();
 
-        return mFlightLogView;
+        return mLogbookEntryView;
     }
 
     private void setupLogbookFragment(){
@@ -197,39 +199,60 @@ public class LogbookFragment extends Fragment {
         EditText flTips = (EditText) vFlightLogEntry.findViewById(R.id.fl_tips);
         EditText flRemarks = (EditText) vFlightLogEntry.findViewById(R.id.fl_remarks);
 
+        //patterns
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(mContext);
+        String tailNumberPattern =
+                preferences.getString(getResources().getString(R.string.pref_tail_number_pattern), null);
+        String flightNumberPattern =
+                preferences.getString(getResources().getString(R.string.pref_flight_number), null );
+
         mLogbookEntry.EntryDate = Util.CustomSimpleDate(mDate);
-        mLogbookEntry.TailNumber = flTailNumber.getText().toString();
-        mLogbookEntry.FlightNumber = flFlightNumber.getText().toString();
+        mLogbookEntry.TailNumber = applyPattern(tailNumberPattern, flTailNumber.getText().toString());
+        mLogbookEntry.FlightNumber = applyPattern(flightNumberPattern, flFlightNumber.getText().toString());
         mLogbookEntry.CrewMember = flCrewMember.getText().toString();
         mLogbookEntry.CrewMeals = Long.parseLong(flCrewMeals.getText().toString());
         mLogbookEntry.Expenses = Long.parseLong(flTips.getText().toString());
         mLogbookEntry.Remarks = flRemarks.getText().toString();
     }
 
+
+    private String applyPattern(String pattern, String s) {
+        if(pattern != null){
+            return pattern.replace("*", s);
+        } else {
+            return s;
+        }
+    }
+
     private void populateLogEntry() {
-        EditText flTailNumber = (EditText) mFlightLogView.findViewById(R.id.fl_tail_number);
-        EditText flFlightNumber = (EditText) mFlightLogView.findViewById(R.id.fl_flight_number);
-        EditText flCrewMember = (EditText) mFlightLogView.findViewById(R.id.fl_crew_member);
-        CheckBox cbSeat = (CheckBox) mFlightLogView.findViewById(R.id.cb_seat);
-        EditText flCrewMeals = (EditText) mFlightLogView.findViewById(R.id.fl_crew_meals);
-        EditText flTips = (EditText) mFlightLogView.findViewById(R.id.fl_tips);
-        EditText flRemarks = (EditText) mFlightLogView.findViewById(R.id.fl_remarks);
+        EditText lbPDStart = (EditText) mLogbookEntryView.findViewById(R.id.fl_pd_start);
+        EditText lbPDEnd = (EditText) mLogbookEntryView.findViewById(R.id.fl_pd_end);
+        EditText lbTailNumber = (EditText) mLogbookEntryView.findViewById(R.id.fl_tail_number);
+        EditText lbFlightNumber = (EditText) mLogbookEntryView.findViewById(R.id.fl_flight_number);
+        EditText lbCrewMember = (EditText) mLogbookEntryView.findViewById(R.id.fl_crew_member);
+        CheckBox lbSeat = (CheckBox) mLogbookEntryView.findViewById(R.id.cb_seat);
+        EditText lbCrewMeals = (EditText) mLogbookEntryView.findViewById(R.id.fl_crew_meals);
+        EditText lbTips = (EditText) mLogbookEntryView.findViewById(R.id.fl_tips);
+        EditText lbRemarks = (EditText) mLogbookEntryView.findViewById(R.id.fl_remarks);
 
-        flTailNumber.setText("");
-        flFlightNumber.setText("");
-        flCrewMember.setText("");
-        cbSeat.setChecked(false);
-        flCrewMeals.setText("");
-        flTailNumber.setText("");
-        flRemarks.setText("");
+        //why are these being reset?
+        lbTailNumber.setText("");
+        lbFlightNumber.setText("");
+        lbCrewMember.setText("");
+        lbSeat.setChecked(false);
+        lbCrewMeals.setText("");
+        lbTailNumber.setText("");
+        lbRemarks.setText("");
 
-        flTailNumber.setText(mLogbookEntry.TailNumber);
-        flFlightNumber.setText(mLogbookEntry.FlightNumber);
-        flCrewMember.setText(mLogbookEntry.CrewMember);
-        cbSeat.setChecked(mLogbookEntry.Pic);
-        flCrewMeals.setText(Long.toString(mLogbookEntry.CrewMeals)); //TODO test this
-        flTips.setText(Long.toString(mLogbookEntry.Expenses));
-        flRemarks.setText(mLogbookEntry.Remarks);
+        lbPDStart.setText(mLogbookEntry.PDStart);
+        lbPDEnd.setText(mLogbookEntry.PDEnd);
+        lbTailNumber.setText(mLogbookEntry.TailNumber);
+        lbFlightNumber.setText(mLogbookEntry.FlightNumber);
+        lbCrewMember.setText(mLogbookEntry.CrewMember);
+        lbSeat.setChecked(mLogbookEntry.Pic);
+        lbCrewMeals.setText(Long.toString(mLogbookEntry.CrewMeals)); //TODO test this
+        lbTips.setText(Long.toString(mLogbookEntry.Expenses));
+        lbRemarks.setText(mLogbookEntry.Remarks);
 
         setupSubmitUpdateButton();
 
@@ -239,7 +262,7 @@ public class LogbookFragment extends Fragment {
     }
 
     private void setupLegButtons() {
-        LinearLayout flLinearLayout = (LinearLayout) mFlightLogView.findViewById(R.id.fl_flight_list);
+        LinearLayout flLinearLayout = (LinearLayout) mLogbookEntryView.findViewById(R.id.fl_flight_list);
 
         flLinearLayout.removeAllViews();
 
@@ -268,7 +291,7 @@ public class LogbookFragment extends Fragment {
             flLinearLayout.addView(btnLeg, new ViewGroup.LayoutParams(lp));
         }
 
-        Button btnAddFlight = (Button) mFlightLogView.findViewById(R.id.btn_add_flight);
+        Button btnAddFlight = (Button) mLogbookEntryView.findViewById(R.id.btn_add_flight);
         btnAddFlight.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -290,7 +313,7 @@ public class LogbookFragment extends Fragment {
     }
 
     private void setupSubmitUpdateButton() {
-        Button btnSubmit = (Button) mFlightLogView.findViewById(R.id.btn_update_flightlog);
+        Button btnSubmit = (Button) mLogbookEntryView.findViewById(R.id.btn_update_flightlog);
         if(mLogbookEntry.Id != null){
             btnSubmit.setText("Update Logbook Entry");
         } else {

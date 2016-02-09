@@ -107,7 +107,7 @@ public class DbUtilities {
 
         fakeEntry.Flights.add(flight);
         fakeEntry.Flights.add(flight2);
-        fakeEntry.Duty = 24;
+        fakeEntry.PDSpan = 24;
         fakeEntry.CrewMeals = 0;
         fakeEntry.Expenses = 2;
 

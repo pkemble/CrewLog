@@ -30,7 +30,6 @@ public class CrewLog extends ActionBarActivity {
         }
 
         ActionBar actionBar = getSupportActionBar();
-        actionBar.setDefaultDisplayHomeAsUpEnabled(true);
 
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(mContext);
         if(preferences.getString("pref_pilot_name", null) == null){
@@ -38,6 +37,7 @@ public class CrewLog extends ActionBarActivity {
                     .replace(R.id.fl_main, new SettingsFragment())
                     .addToBackStack("Flight Entry")
                     .commit();
+            //TODO is this really necessary? doesn't work anyway...
         }
     }
 
